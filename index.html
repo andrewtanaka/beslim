@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>BeSlim — Metabolism & Diet Coach</title>
+<meta name="description" content="Calculate your basal metabolic rate and get a personalized weight-loss plan.">
+<link rel="icon" href="assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app-backdrop">
+<div class="app-shell" id="appShell">
+
+  <!-- ===================== BOOT LOADER ===================== -->
+  <!-- Visible by default so there's no blank flash while boot()
+       checks the Supabase session; boot() hides this once it knows
+       which screen (auth / onboarding / main app) to show. -->
+  <div class="boot-loader" id="bootLoader">
+    <img src="assets/logo.png" alt="BeSlim" class="boot-loader-logo">
+  </div>
+
+  <!-- ===================== AUTH ===================== -->
+  <section class="screen auth-screen" id="authScreen" hidden>
+    <div class="onb-step" data-step="auth-email">
+      <div class="onb-top">
+        <img src="assets/logo.png" alt="BeSlim" class="onb-logo">
+      </div>
+      <h1 data-i18n="auth.emailTitle">Sign in</h1>
+      <p class="onb-sub" data-i18n="auth.emailSub">Enter the email you used at checkout.</p>
+
+      <label class="field">
+        <span data-i18n="auth.email">Email</span>
+        <input type="email" id="authEmail" autocomplete="email" placeholder="you@email.com">
+      </label>
+
+      <p class="auth-error" id="authError" hidden></p>
+      <p class="auth-notice" id="authNotice" hidden></p>
+
+      <button class="btn-primary" id="authSubmit" data-i18n="auth.continueBtn">Continue</button>
+    </div>
+  </section>
+
+  <!-- ===================== ONBOARDING ===================== -->
+  <section class="screen onboarding" id="onboarding" hidden>
+
+    <!-- Step 1 -->
+    <div class="onb-step" data-step="1">
+      <div class="onb-top">
+        <img src="assets/logo.png" alt="BeSlim" class="onb-logo">
+        <div class="onb-progress">
+          <span class="onb-progress-label"><em data-i18n="onb.stepLabel">Step</em> 1 <em data-i18n="onb.of">of</em> 3</span>
+          <div class="onb-track"><div class="onb-fill" style="width:33.33%"></div></div>
+        </div>
+      </div>
+      <h1 data-i18n="onb.step1.title">Let's start with a bit about you.</h1>
+      <p class="onb-sub" data-i18n="onb.step1.sub">This helps us personalize your plan.</p>
+
+      <label class="field">
+        <span data-i18n="onb.name">Name (optional)</span>
+        <input type="text" id="inputName" data-i18n-placeholder="onb.namePh" placeholder="e.g. Alex" autocomplete="given-name">
+      </label>
+
+      <label class="field">
+        <span data-i18n="onb.age">Age</span>
+        <input type="number" id="inputAge" min="14" max="100" inputmode="numeric" placeholder="30">
+      </label>
+
+      <span class="field-label" data-i18n="onb.gender">Biological sex</span>
+      <div class="segmented" id="genderSelect">
+        <button type="button" class="seg-btn" data-value="male" data-i18n="onb.male">Male</button>
+        <button type="button" class="seg-btn" data-value="female" data-i18n="onb.female">Female</button>
+      </div>
+
+      <button class="btn-primary" id="toStep2" data-i18n="onb.continue">Continue</button>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="onb-step" data-step="2" hidden>
+      <div class="onb-top">
+        <img src="assets/logo.png" alt="BeSlim" class="onb-logo">
+        <div class="onb-progress">
+          <span class="onb-progress-label"><em data-i18n="onb.stepLabel">Step</em> 2 <em data-i18n="onb.of">of</em> 3</span>
+          <div class="onb-track"><div class="onb-fill" style="width:66.66%"></div></div>
+        </div>
+      </div>
+      <h1 data-i18n="onb.step2.title">Now, your body measurements.</h1>
+      <p class="onb-sub" data-i18n="onb.step2.sub">Used to calculate your basal metabolic rate.</p>
+
+      <label class="field">
+        <span data-i18n="onb.weight">Weight (kg)</span>
+        <input type="number" id="inputWeight" min="30" max="300" step="0.1" inputmode="decimal" placeholder="70">
+      </label>
+
+      <label class="field">
+        <span data-i18n="onb.height">Height (cm)</span>
+        <input type="number" id="inputHeight" min="120" max="230" inputmode="numeric" placeholder="170">
+      </label>
+
+      <label class="field">
+        <span data-i18n="onb.goalWeight">Goal weight (kg)</span>
+        <input type="number" id="inputGoalWeight" min="30" max="300" step="0.1" inputmode="decimal" placeholder="65">
+      </label>
+
+      <div class="onb-nav">
+        <button class="btn-ghost" id="toStep1Back" data-i18n="onb.back">Back</button>
+        <button class="btn-primary" id="toStep3" data-i18n="onb.continue">Continue</button>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="onb-step" data-step="3" hidden>
+      <div class="onb-top">
+        <img src="assets/logo.png" alt="BeSlim" class="onb-logo">
+        <div class="onb-progress">
+          <span class="onb-progress-label"><em data-i18n="onb.stepLabel">Step</em> 3 <em data-i18n="onb.of">of</em> 3</span>
+          <div class="onb-track"><div class="onb-fill" style="width:100%"></div></div>
+        </div>
+      </div>
+      <h1 data-i18n="onb.step3.title">Last step — your lifestyle.</h1>
+      <p class="onb-sub" data-i18n="onb.step3.sub">This fine-tunes your daily calorie target.</p>
+
+      <span class="field-label" data-i18n="onb.activity">Activity level</span>
+      <div class="option-list" id="activitySelect">
+        <button type="button" class="opt-btn" data-value="1.2">
+          <strong data-i18n="onb.act.sedentary">Sedentary</strong>
+          <small data-i18n="onb.act.sedentaryDesc">Little or no exercise</small>
+        </button>
+        <button type="button" class="opt-btn" data-value="1.375">
+          <strong data-i18n="onb.act.light">Lightly active</strong>
+          <small data-i18n="onb.act.lightDesc">Exercise 1–3 days/week</small>
+        </button>
+        <button type="button" class="opt-btn" data-value="1.55">
+          <strong data-i18n="onb.act.moderate">Moderately active</strong>
+          <small data-i18n="onb.act.moderateDesc">Exercise 3–5 days/week</small>
+        </button>
+        <button type="button" class="opt-btn" data-value="1.725">
+          <strong data-i18n="onb.act.veryActive">Very active</strong>
+          <small data-i18n="onb.act.veryActiveDesc">Exercise 6–7 days/week</small>
+        </button>
+      </div>
+
+      <span class="field-label" data-i18n="onb.goal">Goal</span>
+      <div class="segmented" id="goalSelect">
+        <button type="button" class="seg-btn" data-value="lose" data-i18n="onb.goalLose">Lose weight</button>
+        <button type="button" class="seg-btn" data-value="maintain" data-i18n="onb.goalMaintain">Maintain</button>
+        <button type="button" class="seg-btn" data-value="gain" data-i18n="onb.goalGain">Gain muscle</button>
+      </div>
+
+      <div class="onb-nav">
+        <button class="btn-ghost" id="toStep2Back" data-i18n="onb.back">Back</button>
+        <button class="btn-primary" id="toCalculating" data-i18n="onb.calculate">Calculate my plan</button>
+      </div>
+    </div>
+
+    <!-- Loading / Calculating -->
+    <div class="onb-step onb-loading" data-step="loading" hidden>
+      <img src="assets/logo.png" alt="BeSlim" class="onb-logo onb-logo-center">
+      <p class="loading-title" data-i18n="onb.loadingTitle">Calculating your metabolism…</p>
+      <div class="loading-track"><div class="loading-fill" id="loadingFill"></div></div>
+      <p class="loading-percent" id="loadingPercent">0%</p>
+      <ul class="loading-checklist" id="loadingChecklist">
+        <li data-i18n="onb.check1">Analyzing your body data</li>
+        <li data-i18n="onb.check2">Calculating basal metabolic rate</li>
+        <li data-i18n="onb.check3">Building your calorie target</li>
+        <li data-i18n="onb.check4">Preparing your plan</li>
+      </ul>
+    </div>
+
+  </section>
+
+  <!-- ===================== MAIN APP ===================== -->
+  <div class="screen main-app" id="mainApp" hidden>
+
+    <header class="topbar">
+      <img src="assets/logo.png" alt="BeSlim" class="topbar-logo">
+      <div class="topbar-actions">
+        <div class="lang-toggle" id="langToggle">
+          <button data-lang="en" class="is-active">EN</button>
+          <button data-lang="es">ES</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="tab-content" id="tabContent">
+
+      <!-- ---------- HOME ---------- -->
+      <section class="tab-pane" id="tab-home">
+        <div class="home-head">
+          <div>
+            <p class="greeting" id="greetingText">Hello!</p>
+            <h2 class="page-title" id="dateTitle" data-i18n="home.today">Today</h2>
+          </div>
+        </div>
+
+        <div class="day-strip" id="dayStrip"></div>
+
+        <div class="card hero-card">
+          <div class="hero-left">
+            <span class="muted-label" data-i18n="home.caloriesLeft">Calories left</span>
+            <p class="hero-number" id="kcalRemaining">—</p>
+            <p class="hero-sub"><span id="kcalConsumed">0</span> <span data-i18n="home.kcal">kcal</span> <span data-i18n="home.of">of</span> <span id="kcalTarget">—</span></p>
+          </div>
+          <div class="ring ring-lg" id="kcalRing">
+            <svg viewBox="0 0 80 80" width="76" height="76">
+              <circle cx="40" cy="40" r="34" fill="none" stroke="#e2e4e4" stroke-width="8"/>
+              <circle cx="40" cy="40" r="34" fill="none" stroke="#000000" stroke-width="8" stroke-linecap="round" id="ringProgress" stroke-dasharray="213.6" stroke-dashoffset="213.6" transform="rotate(-90 40 40)"/>
+            </svg>
+            <span class="ring-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3c.4 2.8-1.2 4.3-2.7 6C7.9 10.7 7 12.2 7 14a5 5 0 0010 0c0-1.7-.6-2.9-1.5-4.1-.3.9-.9 1.6-1.7 1.9.4-2.3-.4-3.7-1.3-5C11.9 5.8 11.6 4.4 12 3z"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="macro-mini-grid">
+          <div class="card macro-mini-card">
+            <div class="macro-mini-top">
+              <div>
+                <p class="macro-mini-val" id="proteinVal">0g</p>
+                <span class="macro-mini-label" data-i18n="home.proteinLeft">Protein left</span>
+              </div>
+              <div class="ring ring-sm" data-ring="protein">
+                <svg viewBox="0 0 40 40" width="34" height="34">
+                  <circle cx="20" cy="20" r="16" fill="none" stroke="#e2e4e4" stroke-width="5"/>
+                  <circle cx="20" cy="20" r="16" fill="none" stroke="#ef4444" stroke-width="5" stroke-linecap="round" id="proteinRing" stroke-dasharray="100.5" stroke-dashoffset="100.5" transform="rotate(-90 20 20)"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="card macro-mini-card">
+            <div class="macro-mini-top">
+              <div>
+                <p class="macro-mini-val" id="carbsVal">0g</p>
+                <span class="macro-mini-label" data-i18n="home.carbsLeft">Carbs left</span>
+              </div>
+              <div class="ring ring-sm" data-ring="carbs">
+                <svg viewBox="0 0 40 40" width="34" height="34">
+                  <circle cx="20" cy="20" r="16" fill="none" stroke="#e2e4e4" stroke-width="5"/>
+                  <circle cx="20" cy="20" r="16" fill="none" stroke="#f59e0b" stroke-width="5" stroke-linecap="round" id="carbsRing" stroke-dasharray="100.5" stroke-dashoffset="100.5" transform="rotate(-90 20 20)"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="card macro-mini-card">
+            <div class="macro-mini-top">
+              <div>
+                <p class="macro-mini-val" id="fatVal">0g</p>
+                <span class="macro-mini-label" data-i18n="home.fatLeft">Fat left</span>
+              </div>
+              <div class="ring ring-sm" data-ring="fat">
+                <svg viewBox="0 0 40 40" width="34" height="34">
+                  <circle cx="20" cy="20" r="16" fill="none" stroke="#e2e4e4" stroke-width="5"/>
+                  <circle cx="20" cy="20" r="16" fill="none" stroke="#3b82f6" stroke-width="5" stroke-linecap="round" id="fatRing" stroke-dasharray="100.5" stroke-dashoffset="100.5" transform="rotate(-90 20 20)"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <h3 data-i18n="home.mealsToday">Today's meals</h3>
+          <button class="text-btn" id="clearMealsBtn" data-i18n="home.clear">Clear</button>
+        </div>
+        <div class="meal-quickadd" id="mealQuickadd"></div>
+        <ul class="meal-list" id="mealList"></ul>
+
+        <div class="card tip-card">
+          <span class="tip-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>
+          </span>
+          <div class="tip-body">
+            <strong data-i18n="home.tipOfDay">Tip of the day</strong>
+            <p class="tip-text" id="tipText">Drink a glass of water right now — hydration keeps your metabolism working.</p>
+          </div>
+          <button class="tip-chevron" id="newTipBtn" aria-label="Another tip">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#909a9d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- ---------- PLAN ---------- -->
+      <section class="tab-pane" id="tab-plan" hidden>
+        <div class="section-head" style="margin-top:2px;">
+          <h2 class="page-title" style="margin:0;" data-i18n="plan.title">Your plan</h2>
+          <button class="text-btn" id="editProfileBtn" style="margin-top:0;" data-i18n="plan.edit">Edit data</button>
+        </div>
+
+        <div class="card stat-pair">
+          <div class="stat-block">
+            <span class="muted-label" data-i18n="plan.bmr">Basal metabolic rate</span>
+            <p class="big-number"><span id="bmrValue">—</span> <small data-i18n="home.kcal">kcal</small></p>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-block">
+            <span class="muted-label" data-i18n="plan.tdee">Total daily expenditure</span>
+            <p class="big-number"><span id="tdeeValue">—</span> <small data-i18n="home.kcal">kcal</small></p>
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="muted-label" data-i18n="plan.macroTargets">Daily macro targets</span>
+          <div class="macro-grid">
+            <div class="macro-cell"><span class="dot dot-protein"></span><strong id="macroProteinG">0g</strong><small data-i18n="home.protein">Protein</small></div>
+            <div class="macro-cell"><span class="dot dot-carbs"></span><strong id="macroCarbsG">0g</strong><small data-i18n="home.carbs">Carbs</small></div>
+            <div class="macro-cell"><span class="dot dot-fat"></span><strong id="macroFatG">0g</strong><small data-i18n="home.fat">Fat</small></div>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <h3 data-i18n="plan.sampleMenu">Sample daily menu</h3>
+          <button class="text-btn" id="regeneratePlanBtn" data-i18n="plan.regenerate">Shuffle</button>
+        </div>
+        <div id="menuList"></div>
+
+        <p class="disclaimer" data-i18n="plan.disclaimer">Estimate for general guidance only. Does not replace advice from a nutritionist or physician.</p>
+      </section>
+
+      <!-- ---------- LESSONS ---------- -->
+      <section class="tab-pane" id="tab-lessons" hidden>
+        <h2 class="page-title" data-i18n="lessons.title">Lessons</h2>
+        <div class="lesson-grid" id="lessonGrid"></div>
+      </section>
+
+      <!-- ---------- SHOP ---------- -->
+      <section class="tab-pane" id="tab-shop" hidden>
+        <h2 class="page-title" data-i18n="shop.title">Shop</h2>
+        <p class="onb-sub" data-i18n="shop.sub">Guides and programs to go further.</p>
+        <div class="product-grid" id="productGrid"></div>
+      </section>
+
+      <!-- ---------- PROGRESS ---------- -->
+      <section class="tab-pane" id="tab-progress" hidden>
+        <h2 class="page-title" data-i18n="progress.title">Progress</h2>
+
+        <div class="card stat-pair">
+          <div class="stat-block">
+            <span class="muted-label" data-i18n="progress.start">Start</span>
+            <p class="big-number"><span id="weightStart">—</span> <small>kg</small></p>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-block">
+            <span class="muted-label" data-i18n="progress.current">Current</span>
+            <p class="big-number"><span id="weightCurrent">—</span> <small>kg</small></p>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-block">
+            <span class="muted-label" data-i18n="progress.goal">Goal</span>
+            <p class="big-number"><span id="weightGoal">—</span> <small>kg</small></p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-head" style="margin:0 0 8px;">
+            <span class="muted-label" data-i18n="progress.chart">Weight trend</span>
+          </div>
+          <svg id="weightChart" viewBox="0 0 300 140" class="weight-chart"></svg>
+        </div>
+
+        <form class="card log-form" id="weightLogForm">
+          <span class="muted-label" data-i18n="progress.logNew">Log today's weight</span>
+          <div class="log-form-row">
+            <input type="number" id="newWeightInput" step="0.1" min="30" max="300" placeholder="70.0" required>
+            <button type="submit" class="btn-primary btn-compact" data-i18n="progress.add">Add</button>
+          </div>
+        </form>
+
+        <div class="section-head">
+          <h3 data-i18n="progress.history">History</h3>
+        </div>
+        <ul class="weight-list" id="weightList"></ul>
+
+        <button class="text-btn logout-btn" id="logoutBtn" data-i18n="auth.logout">Log out</button>
+      </section>
+
+    </main>
+
+    <nav class="bottom-nav" id="bottomNav">
+      <button class="nav-btn is-active" data-tab="home">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 11.5 12 4l8 7.5M6 10v9h5v-5h2v5h5v-9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></svg>
+        <span data-i18n="nav.home">Home</span>
+      </button>
+      <button class="nav-btn" data-tab="plan">
+        <svg viewBox="0 0 24 24" width="22" height="22"><rect x="5" y="3.5" width="14" height="17" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 8h6M9 12h6M9 16h3.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <span data-i18n="nav.plan">Plan</span>
+      </button>
+      <button class="nav-btn" data-tab="lessons">
+        <svg viewBox="0 0 24 24" width="22" height="22"><circle cx="12" cy="12" r="8.3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M10 8.5 16 12l-6 3.5z" fill="currentColor"/></svg>
+        <span data-i18n="nav.lessons">Lessons</span>
+      </button>
+      <button class="nav-btn" data-tab="shop">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M6 6h15l-1.5 9h-12z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="9" cy="20" r="1.3" fill="currentColor"/><circle cx="17" cy="20" r="1.3" fill="currentColor"/><path d="M2 3h2.2L6 6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <span data-i18n="nav.shop">Shop</span>
+      </button>
+      <button class="nav-btn" data-tab="progress">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 19V9M10 19V5M16 19v-7M22 19v-3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+        <span data-i18n="nav.progress">Progress</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Lesson video modal -->
+  <div class="drawer-overlay" id="lessonOverlay" hidden>
+    <div class="modal-box">
+      <div class="drawer-head">
+        <h3 id="lessonModalTitle">Lesson</h3>
+        <button class="icon-btn" id="closeLesson">×</button>
+      </div>
+      <div class="video-wrap" id="videoWrap"></div>
+      <div id="lessonRecipe"></div>
+      <p class="onb-sub" id="lessonModalDesc"></p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
