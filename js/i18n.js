@@ -57,6 +57,7 @@ const I18N = {
     "lessons.title":"🎬 Lessons",
     "lessons.locked":"Locked","lessons.free":"Free","lessons.comingSoon":"Video coming soon — attach your lesson link here.",
     "lessons.recipeLabel":"Recipe","lessons.ingredients":"Ingredients","lessons.instructions":"Instructions",
+    "lessons.guideLabel":"Setup guide",
 
     "shop.title":"🛍️ Shop","shop.sub":"Guides and programs to go further.","shop.buy":"Buy now",
     "shop.bestseller":"Best seller","shop.off":"50% OFF",
@@ -133,6 +134,7 @@ const I18N = {
     "lessons.title":"🎬 Clases",
     "lessons.locked":"Bloqueado","lessons.free":"Gratis","lessons.comingSoon":"Video próximamente — adjunta aquí tu enlace de la clase.",
     "lessons.recipeLabel":"Receta","lessons.ingredients":"Ingredientes","lessons.instructions":"Instrucciones",
+    "lessons.guideLabel":"Guía de instalación",
 
     "shop.title":"🛍️ Tienda","shop.sub":"Guías y programas para ir más allá.","shop.buy":"Comprar",
     "shop.bestseller":"Más vendido","shop.off":"50% OFF",
@@ -165,7 +167,30 @@ const LANG_NAMES = { en:"EN", es:"ES" };
 const CONTENT = {
   en: {
     lessons: [
-      { title:"Start here", duration:"", free:true, videoId:"NkjjRqSG0Qk", cover:"assets/lessons/lesson1.jpg", desc:"Begin here — the first steps to get the most out of your BeSlim journey." },
+      { title:"Start here", duration:"", free:true, videoId:"NkjjRqSG0Qk", cover:"assets/lessons/lesson1.jpg", desc:"Begin here — the first steps to get the most out of your BeSlim journey.",
+        installGuide:{
+          title:"Add BeSlim to your Home Screen",
+          subtitle:"So it opens just like an app — one tap, no browser.",
+          ios:{
+            label:"iPhone",
+            steps:[
+              "Open BeSlim. If you see ⋯ at the top, tap it, then tap \"Open in Browser\".",
+              "At the bottom of the screen, tap the Share button (the square with an arrow pointing up).",
+              "Slide the menu up and tap \"Add to Home Screen\".",
+              "Type the name \"BeSlim\" and tap \"Add\" in the top right corner."
+            ]
+          },
+          android:{
+            label:"Android",
+            steps:[
+              "Open BeSlim in Chrome.",
+              "Tap the three dots (⋮) in the top right corner.",
+              "Tap \"Add to Home screen\" (it may say \"Install app\").",
+              "Confirm the name \"BeSlim\" and tap \"Add\"."
+            ]
+          }
+        }
+      },
       { title:"What stops your weight loss", duration:"", free:true, videoId:"hTFmAaCbXgw", cover:"assets/lessons/lesson2.jpg", desc:"The hidden habits that quietly stall your progress." },
       { title:"How to prepare the gelatin trick", duration:"", free:true, videoId:"HQMNvUsHwwY", cover:"assets/lessons/lesson3.jpg", desc:"A simple recipe trick to support your routine.",
         recipe:{
@@ -205,7 +230,30 @@ const CONTENT = {
   },
   es: {
     lessons: [
-      { title:"Empieza aquí", duration:"", free:true, videoId:"NkjjRqSG0Qk", cover:"assets/lessons/lesson1.jpg", desc:"Empieza por aquí — los primeros pasos en tu recorrido con BeSlim." },
+      { title:"Empieza aquí", duration:"", free:true, videoId:"NkjjRqSG0Qk", cover:"assets/lessons/lesson1.jpg", desc:"Empieza por aquí — los primeros pasos en tu recorrido con BeSlim.",
+        installGuide:{
+          title:"Agrega BeSlim a tu pantalla de inicio",
+          subtitle:"Así se abre como una app — con un solo toque, sin navegador.",
+          ios:{
+            label:"iPhone",
+            steps:[
+              "Abre BeSlim. Si ves ⋯ arriba, tócalo y luego toca \"Abrir en el navegador\".",
+              "En la parte de abajo de la pantalla, toca el botón Compartir (el cuadrado con una flecha hacia arriba).",
+              "Desliza el menú hacia arriba y toca \"Agregar a pantalla de inicio\".",
+              "Escribe el nombre \"BeSlim\" y toca \"Agregar\" en la esquina superior derecha."
+            ]
+          },
+          android:{
+            label:"Android",
+            steps:[
+              "Abre BeSlim en Chrome.",
+              "Toca los tres puntos (⋮) en la esquina superior derecha.",
+              "Toca \"Agregar a pantalla de inicio\" (puede decir \"Instalar app\").",
+              "Confirma el nombre \"BeSlim\" y toca \"Agregar\"."
+            ]
+          }
+        }
+      },
       { title:"Qué frena tu pérdida de peso", duration:"", free:true, videoId:"hTFmAaCbXgw", cover:"assets/lessons/lesson2.jpg", desc:"Los hábitos ocultos que frenan tu progreso en silencio." },
       { title:"Cómo preparar el truco de la gelatina", duration:"", free:true, videoId:"HQMNvUsHwwY", cover:"assets/lessons/lesson3.jpg", desc:"Un truco sencillo de receta para apoyar tu rutina.",
         recipe:{

@@ -610,6 +610,30 @@ function openLesson(lesson){
     recipeWrap.hidden = true;
   }
 
+  const guideWrap = document.getElementById("lessonGuide");
+  if(lesson.installGuide){
+    const g = lesson.installGuide;
+    const platformBlock = (p, emoji)=> `
+      <div class="guide-platform">
+        <div class="guide-platform-label">${emoji} ${p.label}</div>
+        <ol class="guide-steps">
+          ${p.steps.map(s=>`<li>${s}</li>`).join("")}
+        </ol>
+      </div>`;
+    guideWrap.innerHTML = `
+      <div class="recipe-card">
+        <span class="pill-tag">${t("lessons.guideLabel")}</span>
+        <h3 class="recipe-title">${g.title}</h3>
+        <p class="recipe-subtitle">${g.subtitle}</p>
+        ${platformBlock(g.ios, "🍎")}
+        ${platformBlock(g.android, "🤖")}
+      </div>`;
+    guideWrap.hidden = false;
+  }else{
+    guideWrap.innerHTML = "";
+    guideWrap.hidden = true;
+  }
+
   document.getElementById("lessonOverlay").hidden = false;
 }
 
@@ -618,12 +642,14 @@ function initLessonHandlers(){
     document.getElementById("lessonOverlay").hidden = true;
     document.getElementById("videoWrap").innerHTML = "";
     document.getElementById("lessonRecipe").innerHTML = "";
+    document.getElementById("lessonGuide").innerHTML = "";
   });
   document.getElementById("lessonOverlay").addEventListener("click", e=>{
     if(e.target.id === "lessonOverlay"){
       document.getElementById("lessonOverlay").hidden = true;
       document.getElementById("videoWrap").innerHTML = "";
       document.getElementById("lessonRecipe").innerHTML = "";
+      document.getElementById("lessonGuide").innerHTML = "";
     }
   });
 }
