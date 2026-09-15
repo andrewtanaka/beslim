@@ -324,19 +324,31 @@
           <form id="myMenuForm" hidden>
             <label class="field">
               <span data-i18n="plan.breakfast">🍳 Breakfast</span>
-              <input type="text" id="myMenuBreakfast" data-i18n-placeholder="plan.myMenuPh" placeholder="e.g. Oatmeal with banana">
+              <div class="menu-field-row">
+                <input type="text" id="myMenuBreakfast" data-i18n-placeholder="plan.myMenuPh" placeholder="e.g. Oatmeal with banana">
+                <input type="number" id="myMenuBreakfastKcal" class="menu-kcal-input" min="0" step="1" placeholder="kcal">
+              </div>
             </label>
             <label class="field">
               <span data-i18n="plan.lunch">🥗 Lunch</span>
-              <input type="text" id="myMenuLunch" data-i18n-placeholder="plan.myMenuPh" placeholder="e.g. Grilled chicken with rice">
+              <div class="menu-field-row">
+                <input type="text" id="myMenuLunch" data-i18n-placeholder="plan.myMenuPh" placeholder="e.g. Grilled chicken with rice">
+                <input type="number" id="myMenuLunchKcal" class="menu-kcal-input" min="0" step="1" placeholder="kcal">
+              </div>
             </label>
             <label class="field">
               <span data-i18n="plan.snack">🍎 Snack</span>
-              <input type="text" id="myMenuSnack" data-i18n-placeholder="plan.myMenuPh" placeholder="e.g. Yogurt with almonds">
+              <div class="menu-field-row">
+                <input type="text" id="myMenuSnack" data-i18n-placeholder="plan.myMenuPh" placeholder="e.g. Yogurt with almonds">
+                <input type="number" id="myMenuSnackKcal" class="menu-kcal-input" min="0" step="1" placeholder="kcal">
+              </div>
             </label>
             <label class="field">
               <span data-i18n="plan.dinner">🌙 Dinner</span>
-              <input type="text" id="myMenuDinner" data-i18n-placeholder="plan.myMenuPh" placeholder="e.g. Baked fish with vegetables">
+              <div class="menu-field-row">
+                <input type="text" id="myMenuDinner" data-i18n-placeholder="plan.myMenuPh" placeholder="e.g. Baked fish with vegetables">
+                <input type="number" id="myMenuDinnerKcal" class="menu-kcal-input" min="0" step="1" placeholder="kcal">
+              </div>
             </label>
             <button type="submit" class="btn-primary" id="myMenuSaveBtn" data-i18n="plan.myMenuSave">Save my menu</button>
           </form>

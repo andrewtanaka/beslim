@@ -169,6 +169,13 @@ input{font-family:inherit;}
   transition:border-color .15s;
 }
 .field input:focus{ border-color:var(--black); }
+.menu-field-row{ display:flex; gap:8px; }
+.menu-field-row input[type="text"]{ flex:1; min-width:0; }
+.menu-kcal-input{
+  flex:0 0 78px;
+  width:78px;
+  text-align:center;
+}
 .field-label{
   font-size:13px;
   font-weight:600;

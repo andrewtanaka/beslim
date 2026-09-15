@@ -522,7 +522,10 @@ function renderMenu(){
 async function loadMyMenu(){
   if(myMenu !== null) return; // cached for the session
   const { data } = await sb.from("custom_menu").select("*").eq("user_id", currentUser.id).maybeSingle();
-  myMenu = data ? { breakfast:data.breakfast||"", lunch:data.lunch||"", snack:data.snack||"", dinner:data.dinner||"" } : false;
+  myMenu = data ? {
+    breakfast:data.breakfast||"", lunch:data.lunch||"", snack:data.snack||"", dinner:data.dinner||"",
+    breakfastKcal:data.breakfast_kcal, lunchKcal:data.lunch_kcal, snackKcal:data.snack_kcal, dinnerKcal:data.dinner_kcal
+  } : false;
 }
 
 function hasAnyMyMenuItem(m){
@@ -537,14 +540,14 @@ async function renderMyMenu(){
 
   if(hasAnyMyMenuItem(myMenu)){
     const rows = [
-      ["plan.breakfast", myMenu.breakfast],
-      ["plan.lunch", myMenu.lunch],
-      ["plan.snack", myMenu.snack],
-      ["plan.dinner", myMenu.dinner]
+      ["plan.breakfast", myMenu.breakfast, myMenu.breakfastKcal],
+      ["plan.lunch", myMenu.lunch, myMenu.lunchKcal],
+      ["plan.snack", myMenu.snack, myMenu.snackKcal],
+      ["plan.dinner", myMenu.dinner, myMenu.dinnerKcal]
     ].filter(([,v])=>v);
-    view.innerHTML = rows.map(([key,val])=>`
+    view.innerHTML = rows.map(([key,val,kcal])=>`
       <div class="menu-meal">
-        <div class="menu-meal-head"><strong>${t(key)}</strong></div>
+        <div class="menu-meal-head"><strong>${t(key)}</strong>${kcal ? `<span>${Math.round(kcal)} ${t("home.kcal")}</span>` : ""}</div>
         <p>${val}</p>
       </div>`).join("");
     view.hidden = false;
@@ -559,6 +562,10 @@ async function renderMyMenu(){
     document.getElementById("myMenuLunch").value = (myMenu && myMenu.lunch) || "";
     document.getElementById("myMenuSnack").value = (myMenu && myMenu.snack) || "";
     document.getElementById("myMenuDinner").value = (myMenu && myMenu.dinner) || "";
+    document.getElementById("myMenuBreakfastKcal").value = (myMenu && myMenu.breakfastKcal) || "";
+    document.getElementById("myMenuLunchKcal").value = (myMenu && myMenu.lunchKcal) || "";
+    document.getElementById("myMenuSnackKcal").value = (myMenu && myMenu.snackKcal) || "";
+    document.getElementById("myMenuDinnerKcal").value = (myMenu && myMenu.dinnerKcal) || "";
   }
 }
 
@@ -578,12 +585,20 @@ function initPlanHandlers(){
 
   document.getElementById("myMenuForm").addEventListener("submit", async e=>{
     e.preventDefault();
+    const kcalOrNull = id=>{
+      const v = document.getElementById(id).value;
+      return v === "" ? null : Number(v);
+    };
     const entry = {
       user_id: currentUser.id,
       breakfast: document.getElementById("myMenuBreakfast").value.trim(),
       lunch: document.getElementById("myMenuLunch").value.trim(),
       snack: document.getElementById("myMenuSnack").value.trim(),
       dinner: document.getElementById("myMenuDinner").value.trim(),
+      breakfast_kcal: kcalOrNull("myMenuBreakfastKcal"),
+      lunch_kcal: kcalOrNull("myMenuLunchKcal"),
+      snack_kcal: kcalOrNull("myMenuSnackKcal"),
+      dinner_kcal: kcalOrNull("myMenuDinnerKcal"),
       updated_at: new Date().toISOString()
     };
     const btn = document.getElementById("myMenuSaveBtn");
@@ -591,7 +606,10 @@ function initPlanHandlers(){
     const { error } = await sb.from("custom_menu").upsert(entry, { onConflict: "user_id" });
     btn.disabled = false;
     if(!error){
-      myMenu = { breakfast:entry.breakfast, lunch:entry.lunch, snack:entry.snack, dinner:entry.dinner };
+      myMenu = {
+        breakfast:entry.breakfast, lunch:entry.lunch, snack:entry.snack, dinner:entry.dinner,
+        breakfastKcal:entry.breakfast_kcal, lunchKcal:entry.lunch_kcal, snackKcal:entry.snack_kcal, dinnerKcal:entry.dinner_kcal
+      };
       renderMyMenu();
     }
   });
