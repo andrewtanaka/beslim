@@ -312,6 +312,36 @@
           </div>
         </div>
 
+        <div class="card">
+          <div class="section-head" style="margin:0 0 4px;">
+            <h3 style="font-size:15px;" data-i18n="plan.myMenuTitle">My own menu</h3>
+            <button class="text-btn" id="myMenuEditBtn" data-i18n="plan.myMenuEdit">Edit</button>
+          </div>
+          <p class="onb-sub" id="myMenuSub" data-i18n="plan.myMenuSub">Write what you actually plan to eat today.</p>
+
+          <div id="myMenuView" hidden></div>
+
+          <form id="myMenuForm" hidden>
+            <label class="field">
+              <span data-i18n="plan.breakfast">🍳 Breakfast</span>
+              <input type="text" id="myMenuBreakfast" data-i18n-placeholder="plan.myMenuPh" placeholder="e.g. Oatmeal with banana">
+            </label>
+            <label class="field">
+              <span data-i18n="plan.lunch">🥗 Lunch</span>
+              <input type="text" id="myMenuLunch" data-i18n-placeholder="plan.myMenuPh" placeholder="e.g. Grilled chicken with rice">
+            </label>
+            <label class="field">
+              <span data-i18n="plan.snack">🍎 Snack</span>
+              <input type="text" id="myMenuSnack" data-i18n-placeholder="plan.myMenuPh" placeholder="e.g. Yogurt with almonds">
+            </label>
+            <label class="field">
+              <span data-i18n="plan.dinner">🌙 Dinner</span>
+              <input type="text" id="myMenuDinner" data-i18n-placeholder="plan.myMenuPh" placeholder="e.g. Baked fish with vegetables">
+            </label>
+            <button type="submit" class="btn-primary" id="myMenuSaveBtn" data-i18n="plan.myMenuSave">Save my menu</button>
+          </form>
+        </div>
+
         <div class="section-head">
           <h3 data-i18n="plan.sampleMenu">Sample daily menu</h3>
           <button class="text-btn" id="regeneratePlanBtn" data-i18n="plan.regenerate">Shuffle</button>
