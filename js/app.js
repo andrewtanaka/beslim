@@ -581,7 +581,9 @@ function openLesson(lesson){
   document.getElementById("lessonModalTitle").textContent = lesson.title;
   document.getElementById("lessonModalDesc").textContent = lesson.desc;
   const wrap = document.getElementById("videoWrap");
-  if(lesson.videoId){
+  if(lesson.videoFile){
+    wrap.innerHTML = `<video src="${lesson.videoFile}" controls playsinline autoplay></video>`;
+  }else if(lesson.videoId){
     wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${lesson.videoId}?rel=0&modestbranding=1&iv_load_policy=3&autoplay=1&playsinline=1" title="${lesson.title}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
   }else{
     wrap.innerHTML = `<span>${t("lessons.comingSoon")}</span>`;

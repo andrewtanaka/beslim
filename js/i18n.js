@@ -167,7 +167,7 @@ const LANG_NAMES = { en:"EN", es:"ES" };
 const CONTENT = {
   en: {
     lessons: [
-      { title:"Start here", duration:"", free:true, videoId:"NkjjRqSG0Qk", cover:"assets/lessons/lesson1.jpg", desc:"Begin here — the first steps to get the most out of your BeSlim journey.",
+      { title:"Start here", duration:"", free:true, videoFile:"assets/videos/lesson1-start-here.mp4", cover:"assets/lessons/lesson1.jpg", desc:"Begin here — the first steps to get the most out of your BeSlim journey.",
         installGuide:{
           title:"Add BeSlim to your Home Screen",
           subtitle:"So it opens just like an app — one tap, no browser.",
@@ -191,8 +191,8 @@ const CONTENT = {
           }
         }
       },
-      { title:"What stops your weight loss", duration:"", free:true, videoId:"hTFmAaCbXgw", cover:"assets/lessons/lesson2.jpg", desc:"The hidden habits that quietly stall your progress." },
-      { title:"How to prepare the gelatin trick", duration:"", free:true, videoId:"HQMNvUsHwwY", cover:"assets/lessons/lesson3.jpg", desc:"A simple recipe trick to support your routine.",
+      { title:"What stops your weight loss", duration:"", free:true, videoFile:"assets/videos/lesson2-what-stops-weight-loss.mp4", cover:"assets/lessons/lesson2.jpg", desc:"The hidden habits that quietly stall your progress." },
+      { title:"How to prepare the gelatin trick", duration:"", free:true, videoFile:"assets/videos/lesson3-gelatin-trick.mp4", cover:"assets/lessons/lesson3.jpg", desc:"A simple recipe trick to support your routine.",
         recipe:{
           title:"Anti-Bloating Gelatin",
           subtitle:"Reduces inflammation and fluid retention",
@@ -211,9 +211,9 @@ const CONTENT = {
           ]
         }
       },
-      { title:"The 5 mistakes that prevent weight loss", duration:"", free:true, videoId:"MhwqXzJ5lDQ", cover:"assets/lessons/lesson4.jpg", desc:"Avoid these five common mistakes holding you back." },
-      { title:"Morning ritual to activate slimming", duration:"", free:true, videoId:"fu0FarkgAuo", cover:"assets/lessons/lesson5.jpg", desc:"A short morning ritual to kickstart your metabolism." },
-      { title:"Real stories of women who have lost weight", duration:"", free:true, videoId:"adAf2pl1s9s", cover:"assets/lessons/lesson6.jpg", desc:"Real, relatable stories for extra motivation." },
+      { title:"The 5 mistakes that prevent weight loss", duration:"", free:true, videoFile:"assets/videos/lesson4-5-mistakes.mp4", cover:"assets/lessons/lesson4.jpg", desc:"Avoid these five common mistakes holding you back." },
+      { title:"Morning ritual to activate slimming", duration:"", free:true, videoFile:"assets/videos/lesson5-morning-ritual.mp4", cover:"assets/lessons/lesson5.jpg", desc:"A short morning ritual to kickstart your metabolism." },
+      { title:"Real stories of women who have lost weight", duration:"", free:true, videoFile:"assets/videos/lesson6-real-stories.mp4", cover:"assets/lessons/lesson6.jpg", desc:"Real, relatable stories for extra motivation." },
       { title:"Community", duration:"", free:true, url:"https://t.me/+bz0kN-5aazJjMzkx", cover:"assets/lessons/community.png", desc:"Join our private community group." }
     ],
     products: [
@@ -230,7 +230,7 @@ const CONTENT = {
   },
   es: {
     lessons: [
-      { title:"Empieza aquí", duration:"", free:true, videoId:"NkjjRqSG0Qk", cover:"assets/lessons/lesson1.jpg", desc:"Empieza por aquí — los primeros pasos en tu recorrido con BeSlim.",
+      { title:"Empieza aquí", duration:"", free:true, videoFile:"assets/videos/lesson1-start-here.mp4", cover:"assets/lessons/lesson1.jpg", desc:"Empieza por aquí — los primeros pasos en tu recorrido con BeSlim.",
         installGuide:{
           title:"Agrega BeSlim a tu pantalla de inicio",
           subtitle:"Así se abre como una app — con un solo toque, sin navegador.",
@@ -254,8 +254,8 @@ const CONTENT = {
           }
         }
       },
-      { title:"Qué frena tu pérdida de peso", duration:"", free:true, videoId:"hTFmAaCbXgw", cover:"assets/lessons/lesson2.jpg", desc:"Los hábitos ocultos que frenan tu progreso en silencio." },
-      { title:"Cómo preparar el truco de la gelatina", duration:"", free:true, videoId:"HQMNvUsHwwY", cover:"assets/lessons/lesson3.jpg", desc:"Un truco sencillo de receta para apoyar tu rutina.",
+      { title:"Qué frena tu pérdida de peso", duration:"", free:true, videoFile:"assets/videos/lesson2-what-stops-weight-loss.mp4", cover:"assets/lessons/lesson2.jpg", desc:"Los hábitos ocultos que frenan tu progreso en silencio." },
+      { title:"Cómo preparar el truco de la gelatina", duration:"", free:true, videoFile:"assets/videos/lesson3-gelatin-trick.mp4", cover:"assets/lessons/lesson3.jpg", desc:"Un truco sencillo de receta para apoyar tu rutina.",
         recipe:{
           title:"Gelatina Antihinchazón",
           subtitle:"Reduce la inflamación y la retención de líquidos",
@@ -274,9 +274,9 @@ const CONTENT = {
           ]
         }
       },
-      { title:"Los 5 errores que impiden bajar de peso", duration:"", free:true, videoId:"MhwqXzJ5lDQ", cover:"assets/lessons/lesson4.jpg", desc:"Evita estos cinco errores comunes que te frenan." },
-      { title:"Ritual matutino para activar tu metabolismo", duration:"", free:true, videoId:"fu0FarkgAuo", cover:"assets/lessons/lesson5.jpg", desc:"Un breve ritual matutino para activar tu metabolismo." },
-      { title:"Historias reales de mujeres que bajaron de peso", duration:"", free:true, videoId:"adAf2pl1s9s", cover:"assets/lessons/lesson6.jpg", desc:"Historias reales y cercanas para motivarte." },
+      { title:"Los 5 errores que impiden bajar de peso", duration:"", free:true, videoFile:"assets/videos/lesson4-5-mistakes.mp4", cover:"assets/lessons/lesson4.jpg", desc:"Evita estos cinco errores comunes que te frenan." },
+      { title:"Ritual matutino para activar tu metabolismo", duration:"", free:true, videoFile:"assets/videos/lesson5-morning-ritual.mp4", cover:"assets/lessons/lesson5.jpg", desc:"Un breve ritual matutino para activar tu metabolismo." },
+      { title:"Historias reales de mujeres que bajaron de peso", duration:"", free:true, videoFile:"assets/videos/lesson6-real-stories.mp4", cover:"assets/lessons/lesson6.jpg", desc:"Historias reales y cercanas para motivarte." },
       { title:"Comunidad", duration:"", free:true, url:"https://t.me/+bz0kN-5aazJjMzkx", cover:"assets/lessons/community.png", desc:"Únete a nuestro grupo privado de la comunidad." }
     ],
     products: [
