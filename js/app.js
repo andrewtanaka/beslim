@@ -133,6 +133,7 @@ function initLogoutHandler(){
     mealsData = null;
     weights = [];
     weightsLoaded = false;
+    myMenu = null;
     document.getElementById("authEmail").value = "";
     showAuthScreen();
   });
@@ -480,7 +481,9 @@ function capitalize(str){
 /* ============================================================
    PLAN tab
    ============================================================ */
-function renderPlan(){
+let myMenu = null; // { breakfast, lunch, snack, dinner } | null, cached per session
+
+async function renderPlan(){
   const calc = computeCalcs(profile);
   document.getElementById("bmrValue").textContent = calc.bmr;
   document.getElementById("tdeeValue").textContent = calc.tdee;
@@ -488,6 +491,7 @@ function renderPlan(){
   document.getElementById("macroCarbsG").textContent = calc.carbsG + "g";
   document.getElementById("macroFatG").textContent = calc.fatG + "g";
   renderMenu();
+  await renderMyMenu();
 }
 
 function renderMenu(){
@@ -514,6 +518,50 @@ function renderMenu(){
   });
 }
 
+/* ---------- My own menu (custom_menu table, one row per user) ---------- */
+async function loadMyMenu(){
+  if(myMenu !== null) return; // cached for the session
+  const { data } = await sb.from("custom_menu").select("*").eq("user_id", currentUser.id).maybeSingle();
+  myMenu = data ? { breakfast:data.breakfast||"", lunch:data.lunch||"", snack:data.snack||"", dinner:data.dinner||"" } : false;
+}
+
+function hasAnyMyMenuItem(m){
+  return !!(m && (m.breakfast || m.lunch || m.snack || m.dinner));
+}
+
+async function renderMyMenu(){
+  await loadMyMenu();
+  const view = document.getElementById("myMenuView");
+  const form = document.getElementById("myMenuForm");
+  const editBtn = document.getElementById("myMenuEditBtn");
+
+  if(hasAnyMyMenuItem(myMenu)){
+    const rows = [
+      ["plan.breakfast", myMenu.breakfast],
+      ["plan.lunch", myMenu.lunch],
+      ["plan.snack", myMenu.snack],
+      ["plan.dinner", myMenu.dinner]
+    ].filter(([,v])=>v);
+    view.innerHTML = rows.map(([key,val])=>`
+      <div class="menu-meal">
+        <div class="menu-meal-head"><strong>${t(key)}</strong></div>
+        <p>${val}</p>
+      </div>`).join("");
+    view.hidden = false;
+    form.hidden = true;
+    editBtn.hidden = false;
+  }else{
+    view.innerHTML = "";
+    view.hidden = true;
+    form.hidden = false;
+    editBtn.hidden = true;
+    document.getElementById("myMenuBreakfast").value = (myMenu && myMenu.breakfast) || "";
+    document.getElementById("myMenuLunch").value = (myMenu && myMenu.lunch) || "";
+    document.getElementById("myMenuSnack").value = (myMenu && myMenu.snack) || "";
+    document.getElementById("myMenuDinner").value = (myMenu && myMenu.dinner) || "";
+  }
+}
+
 function initPlanHandlers(){
   document.getElementById("regeneratePlanBtn").addEventListener("click", ()=>{
     const seed = parseInt(localStorage.getItem(LS_MENU_SEED) || "0", 10);
@@ -521,6 +569,32 @@ function initPlanHandlers(){
     renderMenu();
   });
   document.getElementById("editProfileBtn").addEventListener("click", reopenOnboardingForEdit);
+
+  document.getElementById("myMenuEditBtn").addEventListener("click", ()=>{
+    document.getElementById("myMenuView").hidden = true;
+    document.getElementById("myMenuForm").hidden = false;
+    document.getElementById("myMenuEditBtn").hidden = true;
+  });
+
+  document.getElementById("myMenuForm").addEventListener("submit", async e=>{
+    e.preventDefault();
+    const entry = {
+      user_id: currentUser.id,
+      breakfast: document.getElementById("myMenuBreakfast").value.trim(),
+      lunch: document.getElementById("myMenuLunch").value.trim(),
+      snack: document.getElementById("myMenuSnack").value.trim(),
+      dinner: document.getElementById("myMenuDinner").value.trim(),
+      updated_at: new Date().toISOString()
+    };
+    const btn = document.getElementById("myMenuSaveBtn");
+    btn.disabled = true;
+    const { error } = await sb.from("custom_menu").upsert(entry, { onConflict: "user_id" });
+    btn.disabled = false;
+    if(!error){
+      myMenu = { breakfast:entry.breakfast, lunch:entry.lunch, snack:entry.snack, dinner:entry.dinner };
+      renderMyMenu();
+    }
+  });
 }
 
 function reopenOnboardingForEdit(){

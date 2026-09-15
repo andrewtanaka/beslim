@@ -51,6 +51,8 @@ const I18N = {
 
     "plan.title":"📋 Your plan","plan.edit":"Edit data","plan.bmr":"Basal metabolic rate","plan.tdee":"Total daily expenditure",
     "plan.macroTargets":"Daily macro targets","plan.sampleMenu":"Sample daily menu","plan.regenerate":"🔀 Shuffle",
+    "plan.myMenuTitle":"My own menu","plan.myMenuEdit":"Edit","plan.myMenuSub":"Write what you actually plan to eat today.",
+    "plan.myMenuPh":"Type what you'll eat","plan.myMenuSave":"Save my menu",
     "plan.disclaimer":"Estimate for general guidance only. Does not replace advice from a nutritionist or physician.",
     "plan.breakfast":"🍳 Breakfast","plan.lunch":"🥗 Lunch","plan.snack":"🍎 Snack","plan.dinner":"🌙 Dinner",
 
@@ -128,6 +130,8 @@ const I18N = {
 
     "plan.title":"📋 Tu plan","plan.edit":"Editar datos","plan.bmr":"Tasa metabólica basal","plan.tdee":"Gasto total diario",
     "plan.macroTargets":"Metas diarias de macros","plan.sampleMenu":"Menú diario de ejemplo","plan.regenerate":"🔀 Mezclar",
+    "plan.myMenuTitle":"Mi propio menú","plan.myMenuEdit":"Editar","plan.myMenuSub":"Escribe lo que realmente planeas comer hoy.",
+    "plan.myMenuPh":"Escribe qué vas a comer","plan.myMenuSave":"Guardar mi menú",
     "plan.disclaimer":"Estimación con fines orientativos. No sustituye la asesoría de un nutricionista o médico.",
     "plan.breakfast":"🍳 Desayuno","plan.lunch":"🥗 Almuerzo","plan.snack":"🍎 Merienda","plan.dinner":"🌙 Cena",
 
