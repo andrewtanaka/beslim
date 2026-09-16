@@ -221,9 +221,9 @@ const CONTENT = {
       { title:"Community", duration:"", free:true, url:"https://t.me/+bz0kN-5aazJjMzkx", cover:"assets/lessons/community.png", desc:"Join our private community group." }
     ],
     products: [
-      { cover:"assets/shop/banner1.jpg", name:"SUPER ACCELERATE 10X", price:"$69", desc:"Accelerate your results 10X in a practical and powerful way.", checkoutUrl:"https://checkout.kashpay.com.br/checkout/checkout-1789193073402" },
-      { cover:"assets/shop/banner2.jpg", name:"ELIMINATE SAGGINS", price:"$49", desc:"Restore your skin's firmness and achieve a more defined body after weight loss.", checkoutUrl:"https://checkout.kashpay.com.br/checkout/checkout-1789242784519" },
-      { cover:"assets/shop/banner3.jpg", name:"BYE! STRETCH MARKS", price:"$19", desc:"Reduce stretch marks and restore your skin's beauty.", checkoutUrl:"https://checkout.kashpay.com.br/checkout/checkout-1789244064523" }
+      { cover:"assets/shop/banner1.jpg", name:"SUPER ACCELERATE 10X", price:"$69", desc:"Accelerate your results 10X in a practical and powerful way.", checkoutUrl:"https://checkout.kashpay.com.br/checkout/checkout-1789193073402?src=APP" },
+      { cover:"assets/shop/banner2.jpg", name:"ELIMINATE SAGGINS", price:"$49", desc:"Restore your skin's firmness and achieve a more defined body after weight loss.", checkoutUrl:"https://checkout.kashpay.com.br/checkout/checkout-1789242784519?src=APP" },
+      { cover:"assets/shop/banner3.jpg", name:"BYE! STRETCH MARKS", price:"$19", desc:"Reduce stretch marks and restore your skin's beauty.", checkoutUrl:"https://checkout.kashpay.com.br/checkout/checkout-1789244064523?src=APP" }
     ],
     foods: {
       breakfast: ["Greek yogurt with berries and oats","Scrambled eggs with whole-grain toast","Protein oatmeal with banana","Cottage cheese with pineapple"],
@@ -284,9 +284,9 @@ const CONTENT = {
       { title:"Comunidad", duration:"", free:true, url:"https://t.me/+bz0kN-5aazJjMzkx", cover:"assets/lessons/community.png", desc:"Únete a nuestro grupo privado de la comunidad." }
     ],
     products: [
-      { cover:"assets/shop/banner1.jpg", name:"SUPER ACCELERATE 10X", price:"$69", desc:"Acelera tus resultados 10 veces de forma práctica y poderosa.", checkoutUrl:"https://checkout.kashpay.com.br/checkout/checkout-1789193073402" },
-      { cover:"assets/shop/banner2.jpg", name:"ELIMINATE SAGGINS", price:"$49", desc:"Recupera la firmeza de tu piel y logra un cuerpo más definido después de bajar de peso.", checkoutUrl:"https://checkout.kashpay.com.br/checkout/checkout-1789242784519" },
-      { cover:"assets/shop/banner3.jpg", name:"BYE! STRETCH MARKS", price:"$19", desc:"Reduce las estrías y recupera la belleza de tu piel.", checkoutUrl:"https://checkout.kashpay.com.br/checkout/checkout-1789244064523" }
+      { cover:"assets/shop/banner1.jpg", name:"SUPER ACCELERATE 10X", price:"$69", desc:"Acelera tus resultados 10 veces de forma práctica y poderosa.", checkoutUrl:"https://checkout.kashpay.com.br/checkout/checkout-1789193073402?src=APP" },
+      { cover:"assets/shop/banner2.jpg", name:"ELIMINATE SAGGINS", price:"$49", desc:"Recupera la firmeza de tu piel y logra un cuerpo más definido después de bajar de peso.", checkoutUrl:"https://checkout.kashpay.com.br/checkout/checkout-1789242784519?src=APP" },
+      { cover:"assets/shop/banner3.jpg", name:"BYE! STRETCH MARKS", price:"$19", desc:"Reduce las estrías y recupera la belleza de tu piel.", checkoutUrl:"https://checkout.kashpay.com.br/checkout/checkout-1789244064523?src=APP" }
     ],
     foods: {
       breakfast: ["Yogur griego con frutos rojos y avena","Huevos revueltos con pan integral","Avena proteica con plátano","Requesón con piña"],
