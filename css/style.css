@@ -942,5 +942,152 @@ input{font-family:inherit;}
 }
 .logout-btn{ display:block; margin:24px auto 8px; text-align:center; color:var(--gray-dark); }
 
+/* ============================================================
+   My Plan Vivo — Today's Plan, streak, check-in, achievements
+   ============================================================ */
+.streak-pill{
+  background:var(--gray-light);
+  color:var(--black);
+  font-size:11.5px;
+  font-weight:800;
+  padding:5px 11px;
+  border-radius:var(--radius-pill);
+}
+
+.task-list{ display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+.task-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:16px;
+  box-shadow:var(--shadow-card);
+  padding:12px 14px;
+}
+.task-item.is-done{ background:var(--gray-light); border-color:transparent; box-shadow:none; }
+.task-icon{
+  flex:0 0 40px;
+  width:40px; height:40px;
+  border-radius:12px;
+  background:var(--gray-light);
+  display:flex; align-items:center; justify-content:center;
+  font-size:19px;
+}
+.task-item.is-done .task-icon{ background:var(--white); }
+.task-body{ flex:1; min-width:0; }
+.task-body strong{ display:block; font-size:13.5px; font-weight:800; }
+.task-body p{ font-size:12px; color:var(--gray-dark); margin-top:2px; line-height:1.35; }
+.task-action{
+  flex:0 0 auto;
+  border:none;
+  border-radius:var(--radius-pill);
+  padding:9px 14px;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  background:var(--black);
+  color:var(--white);
+}
+.task-action.is-done{
+  background:transparent;
+  color:var(--black);
+  font-size:18px;
+  padding:0;
+  width:32px; height:32px;
+}
+
+.my-plan-hero{ margin-bottom:0; }
+.my-plan-focus{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid var(--border);
+}
+.my-plan-focus strong{ font-size:14px; font-weight:800; }
+
+.this-week-list{ display:flex; flex-direction:column; gap:8px; margin-bottom:18px; }
+.this-week-item{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:11px 13px;
+  cursor:pointer;
+  text-align:left;
+  width:100%;
+}
+.this-week-item span.tw-icon{ font-size:17px; flex:0 0 auto; }
+.this-week-item span.tw-label{ flex:1; font-size:13px; font-weight:700; }
+.this-week-item span.tw-check{ font-size:14px; color:var(--gray); }
+.this-week-item.is-done span.tw-check{ color:var(--black); }
+
+.checkin-card{ margin-top:4px; }
+
+.recommended-card{ margin-bottom:18px; }
+.recommended-card .lesson-card{ box-shadow:none; background:var(--gray-light); padding:10px; }
+
+.streak-note{
+  font-size:12px;
+  color:var(--gray-dark);
+  text-align:center;
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid var(--border);
+}
+
+.scale-select{ display:flex; gap:6px; margin-top:6px; margin-bottom:4px; }
+.scale-select button{
+  flex:1;
+  border:1.5px solid var(--border);
+  background:var(--white);
+  border-radius:12px;
+  padding:11px 0;
+  font-size:14px;
+  font-weight:700;
+  color:var(--gray-dark);
+  cursor:pointer;
+}
+.scale-select button.is-selected{ background:var(--black); border-color:var(--black); color:var(--white); }
+
+.weekly-summary-list{ display:flex; flex-direction:column; gap:8px; margin-bottom:4px; }
+.weekly-summary-list li{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:11px 14px;
+  font-size:13px;
+  font-weight:600;
+  color:var(--black);
+}
+
+.achievements-grid{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:10px;
+  margin-bottom:4px;
+}
+.achievement-badge{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px 12px;
+  text-align:center;
+  box-shadow:var(--shadow-card);
+}
+.achievement-badge.is-locked{ opacity:.45; box-shadow:none; }
+.achievement-badge .ach-icon{ font-size:26px; display:block; margin-bottom:6px; }
+.achievement-badge strong{ display:block; font-size:12px; font-weight:800; }
+.achievement-badge small{ display:block; font-size:10.5px; color:var(--gray-dark); margin-top:3px; line-height:1.3; }
+
+.challenge-card{ margin-top:4px; }
+
 /* utility */
 [hidden]{ display:none !important; }

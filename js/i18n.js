@@ -40,6 +40,12 @@ const I18N = {
     "nav.home":"Home","nav.plan":"Plan","nav.lessons":"Lessons","nav.shop":"Shop","nav.progress":"Progress",
 
     "home.today":"Today","home.tipOfDay":"Tip of the day","home.newTip":"Another tip",
+    "home.todaysPlan":"🔥 Today's Plan","home.todaysPlanSub":"Small actions for your progress today.",
+    "home.taskNutrition":"Nutrition","home.taskNutritionDesc":"Follow today's nutrition recommendation",
+    "home.taskMovement":"Movement","home.taskMovementDesc":"15 min of movement",
+    "home.taskHabit":"Daily Habit","home.taskHabitDesc":"Complete your hydration goal",
+    "home.taskView":"View","home.taskStart":"Start","home.taskMarkDone":"Mark as done","home.taskDone":"Done",
+    "home.streakDays":"day streak",
     "home.caloriesLeft":"Calories left","home.of":"of",
     "home.dailyGoal":"Daily goal","home.kcal":"kcal","home.consumed":"Consumed","home.remaining":"Remaining",
     "home.protein":"Protein","home.carbs":"Carbs","home.fat":"Fat",
@@ -48,25 +54,98 @@ const I18N = {
     "home.emptyMeals":"No meals logged yet. Tap a quick-add above.",
     "home.greetingHi":"Hi",
     "home.qaBreakfast":"🍳 Breakfast","home.qaLunch":"🥗 Lunch","home.qaSnack":"🍎 Snack","home.qaDinner":"🌙 Dinner",
+    "home.todaysPlan":"🔥 Today's Plan","home.todaysPlanSub":"Small actions for your progress today.",
 
     "plan.title":"📋 Your plan","plan.edit":"Edit data","plan.bmr":"Basal metabolic rate","plan.tdee":"Total daily expenditure",
+    "plan.journeyWeek":"Week {n} of your journey","plan.mainFocus":"Main focus","plan.focusConsistency":"Consistency",
+    "plan.thisWeek":"This week","plan.recommendedLesson":"Recommended lesson",
+    "plan.checkinTitle":"Weekly Check-in","plan.checkinSub":"Take 2 minutes to update your progress.","plan.checkinBtn":"Start check-in",
+    "plan.checkinDoneTitle":"Check-in complete for this week","plan.checkinDoneSub":"See you next week — keep going!",
+    "plan.checkinQWeight":"Current weight (kg)","plan.checkinQEnergy":"Energy level","plan.checkinQNutrition":"Nutrition this week",
+    "plan.checkinQMovement":"How many days did you move this week?","plan.checkinQSleep":"Sleep","plan.checkinQDifficulty":"Biggest challenge",
+    "plan.checkinQOverall":"Overall week","plan.checkinSubmit":"Complete Check-in",
+    "plan.scaleLow":"Very low","plan.scaleHigh":"Excellent","plan.scaleLowAlt":"Difficult","plan.scalePoor":"Poor",
+    "plan.diffConsistency":"Consistency","plan.diffFood":"Food choices","plan.diffCravings":"Cravings",
+    "plan.diffTime":"Lack of time","plan.diffMotivation":"Motivation","plan.diffExercise":"Exercise","plan.diffOther":"Other",
+    "plan.checkinCompleteTitle":"Check-in complete! 🎉","plan.checkinCompleteSub":"Your next week has been prepared.",
+    "plan.yourNextWeek":"Your next week","plan.close":"Close",
     "plan.macroTargets":"Daily macro targets","plan.sampleMenu":"Sample daily menu","plan.regenerate":"🔀 Shuffle",
     "plan.myMenuTitle":"My own menu","plan.myMenuEdit":"Edit","plan.myMenuSub":"Write what you actually plan to eat today.",
     "plan.myMenuPh":"Type what you'll eat","plan.myMenuSave":"Save my menu",
+
+    "today.title":"Today's Plan","today.subtitle":"Small actions for your progress today.",
+    "today.nutritionTitle":"Nutrition","today.nutritionDesc":"Follow today's nutrition recommendation","today.nutritionAction":"View",
+    "today.movementTitle":"Movement","today.movementDesc":"15 min of movement","today.movementAction":"Start",
+    "today.habitTitle":"Daily Habit","today.habitDesc":"Complete your hydration goal","today.habitAction":"Mark as done",
+    "today.done":"Done","today.streak":"day streak",
+
+    "myplan.subtitle":"Your personalized plan","myplan.week":"Week","myplan.ofJourney":"of your journey",
+    "myplan.mainFocus":"Main focus","myplan.thisWeek":"This week","myplan.recommendedLesson":"Recommended Lesson",
+    "myplan.focusConsistency":"Consistency","myplan.focusFoodChoices":"Food choices","myplan.focusCravings":"Managing cravings",
+    "myplan.focusTime":"Making time","myplan.focusMotivation":"Staying motivated","myplan.focusExercise":"Movement",
+    "myplan.focusOther":"Your journey",
+
+    "checkin.cardTitle":"Weekly Check-in","checkin.cardSub":"Take 2 minutes to update your progress.",
+    "checkin.start":"Start check-in","checkin.doneThisWeek":"Check-in completed this week ✓",
+    "checkin.title":"Weekly Check-in","checkin.weight":"Current weight (kg)",
+    "checkin.energy":"Energy level","checkin.nutrition":"Nutrition this week","checkin.movement":"How many days did you move this week?",
+    "checkin.sleep":"Sleep","checkin.difficulty":"Biggest challenge","checkin.overall":"Overall week",
+    "checkin.low":"Very low","checkin.excellent":"Excellent","checkin.poor":"Poor","checkin.difficult":"Difficult",
+    "checkin.submit":"Complete Check-in","checkin.complete":"Check-in complete! 🎉","checkin.nextWeekReady":"Your next week has been prepared.",
+    "checkin.yourNextWeek":"Your next week",
+    "checkin.diffConsistency":"Consistency","checkin.diffFood":"Food choices","checkin.diffCravings":"Cravings",
+    "checkin.diffTime":"Lack of time","checkin.diffMotivation":"Motivation","checkin.diffExercise":"Exercise","checkin.diffOther":"Other",
+
+    "progress.day":"Day","progress.currentStreak":"Current streak","progress.longestStreak":"Best streak",
+    "progress.points":"Your points","progress.consistency":"Your Consistency","progress.consistencyGood":"Great consistency this week.",
+    "progress.thisWeekSummary":"This Week","progress.dailyGoals":"daily goals","progress.checkinCompleted":"Weekly check-in completed",
+    "progress.achievements":"Achievements","progress.challenge":"Challenge of the Month","progress.continueChallenge":"Continue Challenge",
+    "progress.challengeTitle":"21 Days of Consistency","progress.challengeComplete":"Challenge complete! 🎉",
+    "progress.challengeDesc":"Complete all 3 daily actions to count a consistent day.","progress.challengeDays":"days",
+
+    "ach.firstWeek":"First Week","ach.firstWeekReq":"7 day streak",
+    "ach.streak14":"14 Day Streak","ach.streak14Req":"14 days in a row",
+    "ach.streak30":"30 Day Journey","ach.streak30Req":"30 days in a row",
+    "ach.firstCheckin":"First Check-in","ach.firstCheckinReq":"Complete your first weekly check-in",
+    "ach.goalMilestone":"Goal Milestone","ach.goalMilestoneReq":"Halfway to your goal weight",
+
+    "lessons.recommendedTitle":"Recommended for You","lessons.recommendedSub":"Based on your current plan.",
     "plan.disclaimer":"Estimate for general guidance only. Does not replace advice from a nutritionist or physician.",
     "plan.breakfast":"🍳 Breakfast","plan.lunch":"🥗 Lunch","plan.snack":"🍎 Snack","plan.dinner":"🌙 Dinner",
 
+    "plan.myPlanTitle":"My Plan","plan.weekOf":"Week {n} of your journey","plan.mainFocus":"Main focus","plan.focusConsistency":"Consistency",
+    "plan.thisWeek":"This week","plan.recommendedLesson":"Recommended lesson",
+    "plan.checkinTitle":"Weekly Check-in","plan.checkinSub":"Take 2 minutes to update your progress.",
+    "plan.checkinDone":"This week's check-in is complete.","plan.checkinCta":"Start check-in",
+    "plan.checkinWeight":"Current weight (kg)","plan.checkinEnergy":"Energy level","plan.checkinNutrition":"Nutrition this week",
+    "plan.checkinMovement":"How many days did you move this week?","plan.checkinSleep":"Sleep",
+    "plan.checkinChallenge":"Biggest challenge","plan.checkinOverall":"Overall week",
+    "plan.checkinLow":"Very low","plan.checkinExcellent":"Excellent","plan.checkinDifficult":"Difficult","plan.checkinPoor":"Poor",
+    "plan.challengeConsistency":"Consistency","plan.challengeFood":"Food choices","plan.challengeCravings":"Cravings",
+    "plan.challengeTime":"Lack of time","plan.challengeMotivation":"Motivation","plan.challengeExercise":"Exercise","plan.challengeOther":"Other",
+    "plan.checkinSubmit":"Complete Check-in","plan.checkinSuccess":"Check-in complete! 🎉","plan.checkinSuccessSub":"Your progress has been recorded.",
+    "plan.close":"Close",
+
     "lessons.title":"🎬 Lessons",
+    "lessons.recommendedLabel":"Recommended for You","lessons.recommendedSub":"Based on your current plan.",
     "lessons.locked":"Locked","lessons.free":"Free","lessons.comingSoon":"Video coming soon — attach your lesson link here.",
     "lessons.recipeLabel":"Recipe","lessons.ingredients":"Ingredients","lessons.instructions":"Instructions",
     "lessons.guideLabel":"Setup guide",
+    "lessons.recommended":"Recommended for You","lessons.recommendedSub":"Based on your current plan.",
 
     "shop.title":"🛍️ Shop","shop.sub":"Guides and programs to go further.","shop.buy":"Buy now",
     "shop.bestseller":"Best seller","shop.off":"50% OFF",
 
     "progress.title":"📈 Progress","progress.start":"Start","progress.current":"Current","progress.goal":"Goal",
+    "progress.streak":"Streak","progress.bestStreak":"Best streak","progress.consistency":"Your Consistency",
+    "progress.achievements":"Achievements","progress.locked":"Locked","progress.dayN":"Day {n}",
     "progress.chart":"Weight trend","progress.logNew":"Log today's weight","progress.add":"Add",
     "progress.history":"History","progress.empty":"No entries yet — add your first weigh-in above.",
+    "progress.currentStreak":"Current streak","progress.longestStreak":"Best streak",
+    "progress.streakBroken":"Tomorrow is a new opportunity to continue.",
+    "progress.achievements":"Achievements","progress.locked":"Locked",
+    "progress.thisWeek":"This week","progress.dailyGoals":"daily goals completed","progress.checkinCompleted":"Weekly check-in completed",
+    "progress.checkinPending":"Weekly check-in pending",
 
 
     "tips":[
@@ -119,6 +198,12 @@ const I18N = {
     "nav.home":"Inicio","nav.plan":"Plan","nav.lessons":"Clases","nav.shop":"Tienda","nav.progress":"Progreso",
 
     "home.today":"Hoy","home.tipOfDay":"Consejo del día","home.newTip":"Otro consejo",
+    "home.todaysPlan":"🔥 Plan de Hoy","home.todaysPlanSub":"Pequeñas acciones para tu progreso de hoy.",
+    "home.taskNutrition":"Nutrición","home.taskNutritionDesc":"Sigue la recomendación de nutrición de hoy",
+    "home.taskMovement":"Movimiento","home.taskMovementDesc":"15 min de movimiento",
+    "home.taskHabit":"Hábito Diario","home.taskHabitDesc":"Completa tu meta de hidratación",
+    "home.taskView":"Ver","home.taskStart":"Empezar","home.taskMarkDone":"Marcar como hecho","home.taskDone":"Hecho",
+    "home.streakDays":"días de racha",
     "home.caloriesLeft":"Calorías restantes","home.of":"de",
     "home.dailyGoal":"Meta diaria","home.kcal":"kcal","home.consumed":"Consumido","home.remaining":"Restante",
     "home.protein":"Proteína","home.carbs":"Carbohidratos","home.fat":"Grasa",
@@ -127,23 +212,91 @@ const I18N = {
     "home.emptyMeals":"Aún no hay comidas registradas. Toca un acceso rápido arriba.",
     "home.greetingHi":"Hola",
     "home.qaBreakfast":"🍳 Desayuno","home.qaLunch":"🥗 Almuerzo","home.qaSnack":"🍎 Merienda","home.qaDinner":"🌙 Cena",
+    "home.todaysPlan":"🔥 Plan de Hoy","home.todaysPlanSub":"Pequeñas acciones para tu progreso de hoy.",
 
     "plan.title":"📋 Tu plan","plan.edit":"Editar datos","plan.bmr":"Tasa metabólica basal","plan.tdee":"Gasto total diario",
+    "plan.journeyWeek":"Semana {n} de tu recorrido","plan.mainFocus":"Enfoque principal","plan.focusConsistency":"Consistencia",
+    "plan.thisWeek":"Esta semana","plan.recommendedLesson":"Clase recomendada",
+    "plan.checkinTitle":"Check-in Semanal","plan.checkinSub":"Tómate 2 minutos para actualizar tu progreso.","plan.checkinBtn":"Iniciar check-in",
+    "plan.checkinDoneTitle":"Check-in completado esta semana","plan.checkinDoneSub":"Nos vemos la próxima semana — ¡sigue así!",
+    "plan.checkinQWeight":"Peso actual (kg)","plan.checkinQEnergy":"Nivel de energía","plan.checkinQNutrition":"Nutrición esta semana",
+    "plan.checkinQMovement":"¿Cuántos días te moviste esta semana?","plan.checkinQSleep":"Sueño","plan.checkinQDifficulty":"Mayor desafío",
+    "plan.checkinQOverall":"Semana en general","plan.checkinSubmit":"Completar Check-in",
+    "plan.scaleLow":"Muy bajo","plan.scaleHigh":"Excelente","plan.scaleLowAlt":"Difícil","plan.scalePoor":"Malo",
+    "plan.diffConsistency":"Consistencia","plan.diffFood":"Elección de alimentos","plan.diffCravings":"Antojos",
+    "plan.diffTime":"Falta de tiempo","plan.diffMotivation":"Motivación","plan.diffExercise":"Ejercicio","plan.diffOther":"Otro",
+    "plan.checkinCompleteTitle":"¡Check-in completado! 🎉","plan.checkinCompleteSub":"Tu próxima semana ya está lista.",
+    "plan.yourNextWeek":"Tu próxima semana","plan.close":"Cerrar",
     "plan.macroTargets":"Metas diarias de macros","plan.sampleMenu":"Menú diario de ejemplo","plan.regenerate":"🔀 Mezclar",
     "plan.myMenuTitle":"Mi propio menú","plan.myMenuEdit":"Editar","plan.myMenuSub":"Escribe lo que realmente planeas comer hoy.",
     "plan.myMenuPh":"Escribe qué vas a comer","plan.myMenuSave":"Guardar mi menú",
+
+    "today.title":"Plan de Hoy","today.subtitle":"Pequeñas acciones para tu progreso de hoy.",
+    "today.nutritionTitle":"Nutrición","today.nutritionDesc":"Sigue la recomendación de nutrición de hoy","today.nutritionAction":"Ver",
+    "today.movementTitle":"Movimiento","today.movementDesc":"15 min de movimiento","today.movementAction":"Empezar",
+    "today.habitTitle":"Hábito Diario","today.habitDesc":"Cumple tu meta de hidratación","today.habitAction":"Marcar hecho",
+    "today.done":"Hecho","today.streak":"días seguidos",
+
+    "myplan.subtitle":"Tu plan personalizado","myplan.week":"Semana","myplan.ofJourney":"de tu recorrido",
+    "myplan.mainFocus":"Enfoque principal","myplan.thisWeek":"Esta semana","myplan.recommendedLesson":"Clase recomendada",
+    "myplan.focusConsistency":"Consistencia","myplan.focusFoodChoices":"Elección de alimentos","myplan.focusCravings":"Manejo de antojos",
+    "myplan.focusTime":"Encontrar tiempo","myplan.focusMotivation":"Mantener la motivación","myplan.focusExercise":"Movimiento",
+    "myplan.focusOther":"Tu recorrido",
+
+    "checkin.cardTitle":"Check-in Semanal","checkin.cardSub":"Tómate 2 minutos para actualizar tu progreso.",
+    "checkin.start":"Iniciar check-in","checkin.doneThisWeek":"Check-in completado esta semana ✓",
+    "checkin.title":"Check-in Semanal","checkin.weight":"Peso actual (kg)",
+    "checkin.energy":"Nivel de energía","checkin.nutrition":"Nutrición esta semana","checkin.movement":"¿Cuántos días te moviste esta semana?",
+    "checkin.sleep":"Sueño","checkin.difficulty":"Mayor desafío","checkin.overall":"Semana en general",
+    "checkin.low":"Muy bajo","checkin.excellent":"Excelente","checkin.poor":"Malo","checkin.difficult":"Difícil",
+    "checkin.submit":"Completar Check-in","checkin.complete":"¡Check-in completo! 🎉","checkin.nextWeekReady":"Tu próxima semana ya está lista.",
+    "checkin.yourNextWeek":"Tu próxima semana",
+    "checkin.diffConsistency":"Consistencia","checkin.diffFood":"Elección de alimentos","checkin.diffCravings":"Antojos",
+    "checkin.diffTime":"Falta de tiempo","checkin.diffMotivation":"Motivación","checkin.diffExercise":"Ejercicio","checkin.diffOther":"Otro",
+
+    "progress.day":"Día","progress.currentStreak":"Racha actual","progress.longestStreak":"Mejor racha",
+    "progress.points":"Tus puntos","progress.consistency":"Tu Consistencia","progress.consistencyGood":"Muy buena consistencia esta semana.",
+    "progress.thisWeekSummary":"Esta Semana","progress.dailyGoals":"metas diarias","progress.checkinCompleted":"Check-in semanal completado",
+    "progress.achievements":"Logros","progress.challenge":"Reto del Mes","progress.continueChallenge":"Continuar Reto",
+    "progress.challengeTitle":"21 Días de Consistencia","progress.challengeComplete":"¡Reto completado! 🎉",
+    "progress.challengeDesc":"Completa las 3 acciones diarias para contar un día consistente.","progress.challengeDays":"días",
+
+    "ach.firstWeek":"Primera Semana","ach.firstWeekReq":"Racha de 7 días",
+    "ach.streak14":"Racha de 14 Días","ach.streak14Req":"14 días seguidos",
+    "ach.streak30":"Recorrido de 30 Días","ach.streak30Req":"30 días seguidos",
+    "ach.firstCheckin":"Primer Check-in","ach.firstCheckinReq":"Completa tu primer check-in semanal",
+    "ach.goalMilestone":"Meta Intermedia","ach.goalMilestoneReq":"A mitad de camino hacia tu peso meta",
+
+    "lessons.recommendedTitle":"Recomendado para ti","lessons.recommendedSub":"Según tu plan actual.",
     "plan.disclaimer":"Estimación con fines orientativos. No sustituye la asesoría de un nutricionista o médico.",
     "plan.breakfast":"🍳 Desayuno","plan.lunch":"🥗 Almuerzo","plan.snack":"🍎 Merienda","plan.dinner":"🌙 Cena",
 
+    "plan.myPlanTitle":"Mi Plan","plan.weekOf":"Semana {n} de tu recorrido","plan.mainFocus":"Enfoque principal","plan.focusConsistency":"Constancia",
+    "plan.thisWeek":"Esta semana","plan.recommendedLesson":"Clase recomendada",
+    "plan.checkinTitle":"Check-in Semanal","plan.checkinSub":"Tómate 2 minutos para actualizar tu progreso.",
+    "plan.checkinDone":"El check-in de esta semana ya está completo.","plan.checkinCta":"Comenzar check-in",
+    "plan.checkinWeight":"Peso actual (kg)","plan.checkinEnergy":"Nivel de energía","plan.checkinNutrition":"Nutrición esta semana",
+    "plan.checkinMovement":"¿Cuántos días te moviste esta semana?","plan.checkinSleep":"Sueño",
+    "plan.checkinChallenge":"Mayor dificultad","plan.checkinOverall":"Semana en general",
+    "plan.checkinLow":"Muy bajo","plan.checkinExcellent":"Excelente","plan.checkinDifficult":"Difícil","plan.checkinPoor":"Malo",
+    "plan.challengeConsistency":"Constancia","plan.challengeFood":"Elección de alimentos","plan.challengeCravings":"Antojos",
+    "plan.challengeTime":"Falta de tiempo","plan.challengeMotivation":"Motivación","plan.challengeExercise":"Ejercicio","plan.challengeOther":"Otro",
+    "plan.checkinSubmit":"Completar Check-in","plan.checkinSuccess":"¡Check-in completo! 🎉","plan.checkinSuccessSub":"Tu progreso ha sido registrado.",
+    "plan.close":"Cerrar",
+
     "lessons.title":"🎬 Clases",
+    "lessons.recommendedLabel":"Recomendado para Ti","lessons.recommendedSub":"Basado en tu plan actual.",
     "lessons.locked":"Bloqueado","lessons.free":"Gratis","lessons.comingSoon":"Video próximamente — adjunta aquí tu enlace de la clase.",
     "lessons.recipeLabel":"Receta","lessons.ingredients":"Ingredientes","lessons.instructions":"Instrucciones",
     "lessons.guideLabel":"Guía de instalación",
+    "lessons.recommended":"Recomendado para Ti","lessons.recommendedSub":"Basado en tu plan actual.",
 
     "shop.title":"🛍️ Tienda","shop.sub":"Guías y programas para ir más allá.","shop.buy":"Comprar",
     "shop.bestseller":"Más vendido","shop.off":"50% OFF",
 
     "progress.title":"📈 Progreso","progress.start":"Inicio","progress.current":"Actual","progress.goal":"Meta",
+    "progress.streak":"Racha","progress.bestStreak":"Mejor racha","progress.consistency":"Tu Consistencia",
+    "progress.achievements":"Logros","progress.locked":"Bloqueado","progress.dayN":"Día {n}",
     "progress.chart":"Tendencia de peso","progress.logNew":"Registrar peso de hoy","progress.add":"Añadir",
     "progress.history":"Historial","progress.empty":"Aún no hay registros — añade tu primer peso arriba.",
 
@@ -171,7 +324,7 @@ const LANG_NAMES = { en:"EN", es:"ES" };
 const CONTENT = {
   en: {
     lessons: [
-      { title:"Start here", duration:"", free:true, videoFile:"assets/videos/lesson1-start-here.mp4", cover:"assets/lessons/lesson1.jpg", desc:"Begin here — the first steps to get the most out of your BeSlim journey.",
+      { title:"Start here", duration:"", free:true, key:"start-here", videoFile:"assets/videos/lesson1-start-here.mp4", cover:"assets/lessons/lesson1.jpg", desc:"Begin here — the first steps to get the most out of your BeSlim journey.",
         installGuide:{
           title:"Add BeSlim to your Home Screen",
           subtitle:"So it opens just like an app — one tap, no browser.",
@@ -195,8 +348,8 @@ const CONTENT = {
           }
         }
       },
-      { title:"What stops your weight loss", duration:"", free:true, videoFile:"assets/videos/lesson2-what-stops-weight-loss.mp4", cover:"assets/lessons/lesson2.jpg", desc:"The hidden habits that quietly stall your progress." },
-      { title:"How to prepare the gelatin trick", duration:"", free:true, videoFile:"assets/videos/lesson3-gelatin-trick.mp4", cover:"assets/lessons/lesson3.jpg", desc:"A simple recipe trick to support your routine.",
+      { title:"What stops your weight loss", duration:"", free:true, key:"what-stops", videoFile:"assets/videos/lesson2-what-stops-weight-loss.mp4", cover:"assets/lessons/lesson2.jpg", desc:"The hidden habits that quietly stall your progress." },
+      { title:"How to prepare the gelatin trick", duration:"", free:true, key:"gelatin-trick", videoFile:"assets/videos/lesson3-gelatin-trick.mp4", cover:"assets/lessons/lesson3.jpg", desc:"A simple recipe trick to support your routine.",
         recipe:{
           title:"Anti-Bloating Gelatin",
           subtitle:"Reduces inflammation and fluid retention",
@@ -215,9 +368,9 @@ const CONTENT = {
           ]
         }
       },
-      { title:"The 5 mistakes that prevent weight loss", duration:"", free:true, videoFile:"assets/videos/lesson4-5-mistakes.mp4", cover:"assets/lessons/lesson4.jpg", desc:"Avoid these five common mistakes holding you back." },
-      { title:"Morning ritual to activate slimming", duration:"", free:true, videoFile:"assets/videos/lesson5-morning-ritual.mp4", cover:"assets/lessons/lesson5.jpg", desc:"A short morning ritual to kickstart your metabolism." },
-      { title:"Real stories of women who have lost weight", duration:"", free:true, videoFile:"assets/videos/lesson6-real-stories.mp4", cover:"assets/lessons/lesson6.jpg", desc:"Real, relatable stories for extra motivation." },
+      { title:"The 5 mistakes that prevent weight loss", duration:"", free:true, key:"five-mistakes", videoFile:"assets/videos/lesson4-5-mistakes.mp4", cover:"assets/lessons/lesson4.jpg", desc:"Avoid these five common mistakes holding you back." },
+      { title:"Morning ritual to activate slimming", duration:"", free:true, key:"morning-ritual", videoFile:"assets/videos/lesson5-morning-ritual.mp4", cover:"assets/lessons/lesson5.jpg", desc:"A short morning ritual to kickstart your metabolism." },
+      { title:"Real stories of women who have lost weight", duration:"", free:true, key:"real-stories", videoFile:"assets/videos/lesson6-real-stories.mp4", cover:"assets/lessons/lesson6.jpg", desc:"Real, relatable stories for extra motivation." },
       { title:"Community", duration:"", free:true, url:"https://t.me/+bz0kN-5aazJjMzkx", cover:"assets/lessons/community.png", desc:"Join our private community group." }
     ],
     products: [
@@ -230,11 +383,35 @@ const CONTENT = {
       lunch: ["Grilled chicken with rice and vegetables","Tuna salad with quinoa","Turkey wrap with mixed greens","Salmon with sweet potato"],
       snack: ["Protein shake with almond milk","Apple with peanut butter","Handful of almonds and a banana","Rice cakes with cottage cheese"],
       dinner: ["Baked cod with steamed broccoli","Lean beef stir-fry with vegetables","Grilled tofu with brown rice","Chicken soup with whole-grain bread"]
+    },
+    tasks: {
+      nutrition: [
+        { key:"follow_plan", emoji:"🥗", title:"Follow today's nutrition plan", desc:"Stick to your meals or your own menu today.", cta:"View" },
+        { key:"protein_meal", emoji:"🍗", title:"Add a protein-rich meal", desc:"Include a good protein source in at least one meal.", cta:"View" },
+        { key:"log_meal", emoji:"📝", title:"Log at least one meal", desc:"Track something you ate today, right here in the app.", cta:"View" }
+      ],
+      movement: [
+        { key:"walk_15", emoji:"🚶", title:"15 minutes of movement", desc:"A short walk counts — just get moving today.", cta:"Start" },
+        { key:"stretch_10", emoji:"🧘", title:"10 minutes of stretching", desc:"Loosen up, especially if you've been sitting a lot.", cta:"Start" },
+        { key:"stairs", emoji:"🏃", title:"Take the stairs today", desc:"Skip the elevator at least once today.", cta:"Start" }
+      ],
+      habit: [
+        { key:"hydration", emoji:"💧", title:"Complete your hydration goal", desc:"Aim for 8 glasses of water today.", cta:"Mark as done" },
+        { key:"sleep_early", emoji:"😴", title:"Wind down early tonight", desc:"Give yourself a real chance at good sleep.", cta:"Mark as done" },
+        { key:"no_snacking", emoji:"🌙", title:"No late-night snacking", desc:"Give your body a break after dinner.", cta:"Mark as done" }
+      ]
+    },
+    monthlyChallenge: { key:"consistency-21", targetDays:21 },
+    achievements: {
+      streak_7:{ icon:"🏅", title:"First Week", desc:"7 day streak" },
+      streak_14:{ icon:"🔥", title:"14 Day Streak", desc:"Two weeks strong" },
+      streak_30:{ icon:"🏆", title:"30 Day Journey", desc:"A full month of consistency" },
+      first_checkin:{ icon:"📋", title:"First Check-in", desc:"Completed your first weekly check-in" }
     }
   },
   es: {
     lessons: [
-      { title:"Empieza aquí", duration:"", free:true, videoFile:"assets/videos/lesson1-start-here.mp4", cover:"assets/lessons/lesson1.jpg", desc:"Empieza por aquí — los primeros pasos en tu recorrido con BeSlim.",
+      { title:"Empieza aquí", duration:"", free:true, key:"start-here", videoFile:"assets/videos/lesson1-start-here.mp4", cover:"assets/lessons/lesson1.jpg", desc:"Empieza por aquí — los primeros pasos en tu recorrido con BeSlim.",
         installGuide:{
           title:"Agrega BeSlim a tu pantalla de inicio",
           subtitle:"Así se abre como una app — con un solo toque, sin navegador.",
@@ -258,8 +435,8 @@ const CONTENT = {
           }
         }
       },
-      { title:"Qué frena tu pérdida de peso", duration:"", free:true, videoFile:"assets/videos/lesson2-what-stops-weight-loss.mp4", cover:"assets/lessons/lesson2.jpg", desc:"Los hábitos ocultos que frenan tu progreso en silencio." },
-      { title:"Cómo preparar el truco de la gelatina", duration:"", free:true, videoFile:"assets/videos/lesson3-gelatin-trick.mp4", cover:"assets/lessons/lesson3.jpg", desc:"Un truco sencillo de receta para apoyar tu rutina.",
+      { title:"Qué frena tu pérdida de peso", duration:"", free:true, key:"what-stops", videoFile:"assets/videos/lesson2-what-stops-weight-loss.mp4", cover:"assets/lessons/lesson2.jpg", desc:"Los hábitos ocultos que frenan tu progreso en silencio." },
+      { title:"Cómo preparar el truco de la gelatina", duration:"", free:true, key:"gelatin-trick", videoFile:"assets/videos/lesson3-gelatin-trick.mp4", cover:"assets/lessons/lesson3.jpg", desc:"Un truco sencillo de receta para apoyar tu rutina.",
         recipe:{
           title:"Gelatina Antihinchazón",
           subtitle:"Reduce la inflamación y la retención de líquidos",
@@ -278,9 +455,9 @@ const CONTENT = {
           ]
         }
       },
-      { title:"Los 5 errores que impiden bajar de peso", duration:"", free:true, videoFile:"assets/videos/lesson4-5-mistakes.mp4", cover:"assets/lessons/lesson4.jpg", desc:"Evita estos cinco errores comunes que te frenan." },
-      { title:"Ritual matutino para activar tu metabolismo", duration:"", free:true, videoFile:"assets/videos/lesson5-morning-ritual.mp4", cover:"assets/lessons/lesson5.jpg", desc:"Un breve ritual matutino para activar tu metabolismo." },
-      { title:"Historias reales de mujeres que bajaron de peso", duration:"", free:true, videoFile:"assets/videos/lesson6-real-stories.mp4", cover:"assets/lessons/lesson6.jpg", desc:"Historias reales y cercanas para motivarte." },
+      { title:"Los 5 errores que impiden bajar de peso", duration:"", free:true, key:"five-mistakes", videoFile:"assets/videos/lesson4-5-mistakes.mp4", cover:"assets/lessons/lesson4.jpg", desc:"Evita estos cinco errores comunes que te frenan." },
+      { title:"Ritual matutino para activar tu metabolismo", duration:"", free:true, key:"morning-ritual", videoFile:"assets/videos/lesson5-morning-ritual.mp4", cover:"assets/lessons/lesson5.jpg", desc:"Un breve ritual matutino para activar tu metabolismo." },
+      { title:"Historias reales de mujeres que bajaron de peso", duration:"", free:true, key:"real-stories", videoFile:"assets/videos/lesson6-real-stories.mp4", cover:"assets/lessons/lesson6.jpg", desc:"Historias reales y cercanas para motivarte." },
       { title:"Comunidad", duration:"", free:true, url:"https://t.me/+bz0kN-5aazJjMzkx", cover:"assets/lessons/community.png", desc:"Únete a nuestro grupo privado de la comunidad." }
     ],
     products: [
@@ -293,6 +470,30 @@ const CONTENT = {
       lunch: ["Pollo a la plancha con arroz y verduras","Ensalada de atún con quinoa","Wrap de pavo con hojas verdes","Salmón con batata"],
       snack: ["Batido de proteína con leche de almendra","Manzana con mantequilla de maní","Puñado de almendras y un plátano","Tortitas de arroz con requesón"],
       dinner: ["Bacalao al horno con brócoli al vapor","Salteado de res magra con verduras","Tofu a la plancha con arroz integral","Sopa de pollo con pan integral"]
+    },
+    tasks: {
+      nutrition: [
+        { key:"follow_plan", emoji:"🥗", title:"Sigue tu plan de nutrición de hoy", desc:"Cúmplelo con tus comidas o tu propio menú hoy.", cta:"Ver" },
+        { key:"protein_meal", emoji:"🍗", title:"Agrega una comida rica en proteína", desc:"Incluye una buena fuente de proteína en al menos una comida.", cta:"Ver" },
+        { key:"log_meal", emoji:"📝", title:"Registra al menos una comida", desc:"Anota algo que comiste hoy, aquí mismo en la app.", cta:"Ver" }
+      ],
+      movement: [
+        { key:"walk_15", emoji:"🚶", title:"15 minutos de movimiento", desc:"Una caminata corta cuenta — solo muévete hoy.", cta:"Empezar" },
+        { key:"stretch_10", emoji:"🧘", title:"10 minutos de estiramiento", desc:"Relájate, sobre todo si has estado mucho tiempo sentado.", cta:"Empezar" },
+        { key:"stairs", emoji:"🏃", title:"Usa las escaleras hoy", desc:"Evita el ascensor al menos una vez hoy.", cta:"Empezar" }
+      ],
+      habit: [
+        { key:"hydration", emoji:"💧", title:"Completa tu meta de hidratación", desc:"Intenta tomar 8 vasos de agua hoy.", cta:"Marcar como hecho" },
+        { key:"sleep_early", emoji:"😴", title:"Relájate temprano esta noche", desc:"Date una verdadera oportunidad de dormir bien.", cta:"Marcar como hecho" },
+        { key:"no_snacking", emoji:"🌙", title:"Sin picar de noche", desc:"Dale un descanso a tu cuerpo después de cenar.", cta:"Marcar como hecho" }
+      ]
+    },
+    monthlyChallenge: { key:"consistency-21", targetDays:21 },
+    achievements: {
+      streak_7:{ icon:"🏅", title:"Primera Semana", desc:"Racha de 7 días" },
+      streak_14:{ icon:"🔥", title:"Racha de 14 Días", desc:"Dos semanas seguidas" },
+      streak_30:{ icon:"🏆", title:"30 Días de Recorrido", desc:"Un mes completo de constancia" },
+      first_checkin:{ icon:"📋", title:"Primer Check-in", desc:"Completaste tu primer check-in semanal" }
     }
   }
 };

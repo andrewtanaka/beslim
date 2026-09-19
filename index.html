@@ -270,6 +270,13 @@
         </div>
 
         <div class="section-head">
+          <h3 data-i18n="home.todaysPlan">🔥 Today's Plan</h3>
+          <span class="streak-pill" id="homeStreakPill" hidden></span>
+        </div>
+        <p class="onb-sub" data-i18n="home.todaysPlanSub" style="margin:-8px 0 12px;">Small actions for your progress today.</p>
+        <div class="task-list" id="taskList"></div>
+
+        <div class="section-head">
           <h3 data-i18n="home.mealsToday">Today's meals</h3>
           <button class="text-btn" id="clearMealsBtn" data-i18n="home.clear">Clear</button>
         </div>
@@ -292,6 +299,26 @@
 
       <!-- ---------- PLAN ---------- -->
       <section class="tab-pane" id="tab-plan" hidden>
+        <div class="card my-plan-hero">
+          <span class="muted-label" id="planWeekLabel">Week 1 of your journey</span>
+          <div class="bar-track" style="margin-top:9px;"><div class="bar-fill" id="planWeekBar" style="width:0%"></div></div>
+          <div class="my-plan-focus">
+            <span class="muted-label" data-i18n="plan.mainFocus">Main focus</span>
+            <strong data-i18n="plan.focusConsistency">Consistency</strong>
+          </div>
+        </div>
+
+        <div class="section-head" style="margin-top:18px;">
+          <h3 data-i18n="plan.thisWeek">This week</h3>
+        </div>
+        <div class="this-week-list" id="thisWeekList"></div>
+
+        <div class="card checkin-card" id="checkinCard">
+          <span class="pill-tag">📋 <span data-i18n="plan.checkinTitle">Weekly Check-in</span></span>
+          <p class="onb-sub" id="checkinCardSub" data-i18n="plan.checkinSub">Take 2 minutes to update your progress.</p>
+          <button class="btn-primary btn-compact" id="openCheckinBtn" data-i18n="plan.checkinBtn">Start check-in</button>
+        </div>
+
         <div class="section-head" style="margin-top:2px;">
           <h2 class="page-title" style="margin:0;" data-i18n="plan.title">Your plan</h2>
           <button class="text-btn" id="editProfileBtn" style="margin-top:0;" data-i18n="plan.edit">Edit data</button>
@@ -372,6 +399,15 @@
       <!-- ---------- LESSONS ---------- -->
       <section class="tab-pane" id="tab-lessons" hidden>
         <h2 class="page-title" data-i18n="lessons.title">Lessons</h2>
+        <div class="card recommended-card">
+          <span class="pill-tag">✨ <span data-i18n="lessons.recommended">Recommended for You</span></span>
+          <p class="onb-sub" data-i18n="lessons.recommendedSub">Based on your current plan.</p>
+          <button class="lesson-card" id="recommendedLessonBtn" style="margin-top:10px; width:100%;">
+            <div class="lesson-thumb"><img id="recommendedLessonImg" src="" alt=""></div>
+            <div class="lesson-info"><strong id="recommendedLessonTitle"></strong></div>
+            <span class="lesson-action"><img class="play-icon-img" src="assets/icons/play.png" alt="Play"></span>
+          </button>
+        </div>
         <div class="lesson-grid" id="lessonGrid"></div>
       </section>
 
@@ -385,6 +421,26 @@
       <!-- ---------- PROGRESS ---------- -->
       <section class="tab-pane" id="tab-progress" hidden>
         <h2 class="page-title" data-i18n="progress.title">Progress</h2>
+
+        <div class="card">
+          <div class="stat-pair" style="margin:0;">
+            <div class="stat-block">
+              <span class="muted-label" data-i18n="progress.day">Day</span>
+              <p class="big-number" id="progressDayN">—</p>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-block">
+              <span class="muted-label" data-i18n="progress.currentStreak">Current streak</span>
+              <p class="big-number">🔥 <span id="progressCurrentStreak">0</span></p>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-block">
+              <span class="muted-label" data-i18n="progress.longestStreak">Best streak</span>
+              <p class="big-number">🏆 <span id="progressLongestStreak">0</span></p>
+            </div>
+          </div>
+          <p class="streak-note" id="streakNote" data-i18n="progress.streakBroken" hidden>Tomorrow is a new opportunity to continue.</p>
+        </div>
 
         <div class="card stat-pair">
           <div class="stat-block">
@@ -422,6 +478,35 @@
           <h3 data-i18n="progress.history">History</h3>
         </div>
         <ul class="weight-list" id="weightList"></ul>
+
+        <div class="card">
+          <span class="muted-label" data-i18n="progress.consistency">Your Consistency</span>
+          <p class="big-number" id="consistencyPct">—</p>
+          <p class="onb-sub" id="consistencyNote"></p>
+        </div>
+
+        <div class="section-head">
+          <h3 data-i18n="progress.thisWeekSummary">This Week</h3>
+        </div>
+        <ul class="weekly-summary-list" id="weeklySummaryList"></ul>
+
+        <div class="section-head">
+          <h3 data-i18n="progress.achievements">Achievements</h3>
+        </div>
+        <div class="achievements-grid" id="achievementsGrid"></div>
+
+        <div class="card challenge-card">
+          <span class="pill-tag">🎯 <span data-i18n="progress.challenge">Challenge of the Month</span></span>
+          <h3 class="recipe-title" data-i18n="progress.challengeTitle">21 Days of Consistency</h3>
+          <p class="recipe-subtitle" data-i18n="progress.challengeDesc">Complete all 3 daily actions to count a consistent day.</p>
+          <div class="bar-track" style="margin-top:6px;"><div class="bar-fill" id="challengeBar" style="width:0%"></div></div>
+          <p class="onb-sub" id="challengeProgressText" style="margin-top:8px;"></p>
+        </div>
+
+        <div class="card">
+          <span class="muted-label" data-i18n="progress.points">Your points</span>
+          <p class="big-number" id="pointsTotal">0</p>
+        </div>
 
         <button class="text-btn logout-btn" id="logoutBtn" data-i18n="auth.logout">Log out</button>
       </section>
@@ -463,6 +548,59 @@
       <div id="lessonRecipe"></div>
       <div id="lessonGuide"></div>
       <p class="onb-sub" id="lessonModalDesc"></p>
+    </div>
+  </div>
+
+  <!-- Weekly check-in modal -->
+  <div class="drawer-overlay" id="checkinOverlay" hidden>
+    <div class="modal-box">
+      <div class="drawer-head">
+        <h3 data-i18n="checkin.title">Weekly Check-in</h3>
+        <button class="icon-btn" id="closeCheckin">×</button>
+      </div>
+
+      <form id="checkinForm">
+        <label class="field">
+          <span data-i18n="checkin.weight">Current weight (kg)</span>
+          <input type="number" id="checkinWeight" step="0.1" min="30" max="300" required>
+        </label>
+
+        <span class="field-label" data-i18n="checkin.energy">Energy level</span>
+        <div class="scale-select" id="checkinEnergy"></div>
+
+        <span class="field-label" data-i18n="checkin.nutrition">Nutrition this week</span>
+        <div class="scale-select" id="checkinNutrition"></div>
+
+        <label class="field">
+          <span data-i18n="checkin.movement">How many days did you move this week?</span>
+          <input type="number" id="checkinMovement" min="0" max="7" step="1" required>
+        </label>
+
+        <span class="field-label" data-i18n="checkin.sleep">Sleep</span>
+        <div class="scale-select" id="checkinSleep"></div>
+
+        <span class="field-label" data-i18n="checkin.difficulty">Biggest challenge</span>
+        <div class="option-list" id="checkinDifficulty">
+          <button type="button" class="opt-btn" data-value="consistency"><strong data-i18n="checkin.diffConsistency">Consistency</strong></button>
+          <button type="button" class="opt-btn" data-value="food"><strong data-i18n="checkin.diffFood">Food choices</strong></button>
+          <button type="button" class="opt-btn" data-value="cravings"><strong data-i18n="checkin.diffCravings">Cravings</strong></button>
+          <button type="button" class="opt-btn" data-value="time"><strong data-i18n="checkin.diffTime">Lack of time</strong></button>
+          <button type="button" class="opt-btn" data-value="motivation"><strong data-i18n="checkin.diffMotivation">Motivation</strong></button>
+          <button type="button" class="opt-btn" data-value="exercise"><strong data-i18n="checkin.diffExercise">Exercise</strong></button>
+          <button type="button" class="opt-btn" data-value="other"><strong data-i18n="checkin.diffOther">Other</strong></button>
+        </div>
+
+        <span class="field-label" data-i18n="checkin.overall">Overall week</span>
+        <div class="scale-select" id="checkinOverall"></div>
+
+        <p class="auth-error" id="checkinError" hidden></p>
+        <button type="submit" class="btn-primary" id="checkinSubmitBtn" data-i18n="checkin.submit" style="margin-top:16px;">Complete Check-in</button>
+      </form>
+
+      <div id="checkinSuccess" hidden style="text-align:center; padding:20px 0;">
+        <p style="font-size:20px; font-weight:800; margin-bottom:6px;" data-i18n="checkin.complete">Check-in complete! 🎉</p>
+        <p class="onb-sub" data-i18n="checkin.nextWeekReady">Your next week has been prepared.</p>
+      </div>
     </div>
   </div>
 

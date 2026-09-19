@@ -27,7 +27,15 @@ let lang = localStorage.getItem(LS_LANG) || "en";
 let profile = null;
 let mealsData = null;
 let weights = [];
+let weightsLoaded = false;
 let currentUser = null;
+
+/* My Plan Vivo state (session-cached, reset on logout) */
+let myTasks = null;          // { date, done:Set(category) }
+let streakInfo = null;       // { current, longest, last }
+let achievementsUnlocked = null; // Set(achievement_key)
+let pointsTotal = null;      // number
+let lastCheckin = null;      // row | false | null(unknown yet)
 
 const onbSelections = { gender:null, activity:null, goal:null };
 
@@ -134,6 +142,11 @@ function initLogoutHandler(){
     weights = [];
     weightsLoaded = false;
     myMenu = null;
+    myTasks = null;
+    streakInfo = null;
+    achievementsUnlocked = null;
+    pointsTotal = null;
+    lastCheckin = null;
     document.getElementById("authEmail").value = "";
     showAuthScreen();
   });
@@ -442,6 +455,7 @@ async function renderHome(){
   renderMealQuickadd();
   renderMealList();
   renderTip(false);
+  await renderTodayPlan();
 }
 
 function setMiniRing(key, consumedVal, targetG){
@@ -492,6 +506,8 @@ async function renderPlan(){
   document.getElementById("macroFatG").textContent = calc.fatG + "g";
   renderMenu();
   await renderMyMenu();
+  await renderMyPlanHeader();
+  await renderMyPlanThisWeek();
 }
 
 function renderMenu(){
@@ -569,6 +585,404 @@ async function renderMyMenu(){
   }
 }
 
+/* ============================================================
+   My Plan Vivo — daily tasks, streak, points, achievements,
+   weekly check-in, recommended lesson, monthly challenge.
+   All persisted in Supabase, scoped to the signed-in user.
+   ============================================================ */
+
+function getWeekStartStr(){
+  const today = new Date();
+  const dow = (today.getDay() + 6) % 7; // 0 = Monday
+  const monday = new Date(today);
+  monday.setDate(today.getDate() - dow);
+  return monday.getFullYear()+"-"+String(monday.getMonth()+1).padStart(2,"0")+"-"+String(monday.getDate()).padStart(2,"0");
+}
+
+const DIFFICULTY_LESSON_MAP = {
+  consistency:"start-here", food:"gelatin-trick", cravings:"gelatin-trick",
+  time:"morning-ritual", motivation:"real-stories", exercise:"what-stops", other:"five-mistakes"
+};
+
+function getAchievementDefs(){
+  return [
+    { key:"streak_7", icon:"🏅", titleKey:"ach.firstWeek", reqKey:"ach.firstWeekReq", reqType:"streak", reqValue:7 },
+    { key:"streak_14", icon:"🔥", titleKey:"ach.streak14", reqKey:"ach.streak14Req", reqType:"streak", reqValue:14 },
+    { key:"streak_30", icon:"🏆", titleKey:"ach.streak30", reqKey:"ach.streak30Req", reqType:"streak", reqValue:30 },
+    { key:"first_checkin", icon:"📋", titleKey:"ach.firstCheckin", reqKey:"ach.firstCheckinReq", reqType:"checkin", reqValue:1 },
+    { key:"goal_milestone", icon:"🎯", titleKey:"ach.goalMilestone", reqKey:"ach.goalMilestoneReq", reqType:"goal", reqValue:0.5 }
+  ];
+}
+
+/* ---------- Today's Plan (Home) ---------- */
+function pickTask(category){
+  const pool = CONTENT[lang].tasks[category];
+  return pool[dayOfYear() % pool.length];
+}
+
+async function loadTodayTasks(){
+  if(myTasks && myTasks.date === todayStr()) return;
+  const { data } = await sb.from("user_daily_tasks").select("category").eq("user_id", currentUser.id).eq("date", todayStr());
+  myTasks = { date: todayStr(), done: new Set((data||[]).map(r=>r.category)) };
+}
+
+async function renderTodayPlan(){
+  await loadTodayTasks();
+  const list = document.getElementById("taskList");
+  list.innerHTML = "";
+  ["nutrition","movement","habit"].forEach(cat=>{
+    const task = pickTask(cat);
+    const isDone = myTasks.done.has(cat);
+    const row = document.createElement("div");
+    row.className = "task-item" + (isDone ? " is-done" : "");
+    row.innerHTML = `
+      <div class="task-icon">${task.emoji}</div>
+      <div class="task-body"><strong>${task.title}</strong><p>${task.desc}</p></div>
+      <button class="task-action${isDone ? " is-done" : ""}">${isDone ? "✓" : task.cta}</button>`;
+    if(!isDone){
+      row.querySelector(".task-action").addEventListener("click", ()=>completeTask(cat, task.key));
+    }
+    list.appendChild(row);
+  });
+  await renderStreakPill();
+}
+
+async function completeTask(category, taskKey){
+  const { error } = await sb.from("user_daily_tasks").insert({
+    user_id: currentUser.id, date: todayStr(), category, task_key: taskKey
+  });
+  if(error) return; // already completed (duplicate click) — ignore quietly
+  myTasks.done.add(category);
+  await awardPoints(10, "daily_task");
+  await updateStreakAfterCompletion();
+  await checkAchievements();
+  renderTodayPlan();
+}
+
+/* ---------- Streak ---------- */
+async function loadStreak(){
+  if(streakInfo) return;
+  const { data } = await sb.from("streaks").select("*").eq("user_id", currentUser.id).maybeSingle();
+  streakInfo = data
+    ? { current:data.current_streak, longest:data.longest_streak, last:data.last_completed_date }
+    : { current:0, longest:0, last:null };
+}
+
+async function updateStreakAfterCompletion(){
+  await loadStreak();
+  const today = todayStr();
+  let current = streakInfo.current, longest = streakInfo.longest;
+  if(streakInfo.last === today){
+    // already counted today, nothing to do
+  }else{
+    const y = new Date(); y.setDate(y.getDate()-1);
+    const yStr = y.getFullYear()+"-"+String(y.getMonth()+1).padStart(2,"0")+"-"+String(y.getDate()).padStart(2,"0");
+    current = (streakInfo.last === yStr) ? streakInfo.current + 1 : 1;
+    longest = Math.max(streakInfo.longest||0, current);
+  }
+  await sb.from("streaks").upsert(
+    { user_id: currentUser.id, current_streak: current, longest_streak: longest, last_completed_date: today },
+    { onConflict:"user_id" }
+  );
+  streakInfo = { current, longest, last: today };
+}
+
+async function renderStreakPill(){
+  await loadStreak();
+  const pill = document.getElementById("homeStreakPill");
+  if(streakInfo.current > 0){
+    pill.textContent = `🔥 ${streakInfo.current} ${t("home.streakDays")}`;
+    pill.hidden = false;
+  }else{
+    pill.hidden = true;
+  }
+}
+
+/* ---------- Points ---------- */
+async function loadPoints(){
+  if(pointsTotal !== null) return;
+  const { data } = await sb.from("points").select("amount").eq("user_id", currentUser.id);
+  pointsTotal = (data||[]).reduce((s,r)=>s+Number(r.amount), 0);
+}
+
+async function awardPoints(amount, reason){
+  await sb.from("points").insert({ user_id: currentUser.id, amount, reason });
+  await loadPoints();
+  pointsTotal += amount;
+}
+
+/* ---------- Achievements ---------- */
+async function loadAchievements(){
+  if(achievementsUnlocked) return;
+  const { data } = await sb.from("user_achievements").select("achievement_key").eq("user_id", currentUser.id);
+  achievementsUnlocked = new Set((data||[]).map(r=>r.achievement_key));
+}
+
+async function checkAchievements(){
+  await loadAchievements();
+  await loadStreak();
+  for(const def of getAchievementDefs()){
+    if(achievementsUnlocked.has(def.key)) continue;
+    let qualifies = false;
+    if(def.reqType === "streak") qualifies = streakInfo.current >= def.reqValue;
+    else if(def.reqType === "checkin") qualifies = !!lastCheckin;
+    else if(def.reqType === "goal" && profile){
+      const start = profile.weight, goal = profile.goalWeight;
+      const currentW = weightsLoaded && weights.length ? weights[weights.length-1].value : start;
+      const total = Math.abs(goal - start);
+      qualifies = total > 0 && (Math.abs(start - currentW)/total) >= def.reqValue;
+    }
+    if(qualifies){
+      const { error } = await sb.from("user_achievements").insert({ user_id: currentUser.id, achievement_key: def.key });
+      if(!error){
+        achievementsUnlocked.add(def.key);
+        if(def.key === "streak_7") await awardPoints(100, "streak_7_bonus");
+      }
+    }
+  }
+}
+
+/* ---------- Weekly check-in ---------- */
+async function loadLastCheckin(){
+  if(lastCheckin !== null) return;
+  const { data } = await sb.from("weekly_checkins").select("*").eq("user_id", currentUser.id).eq("week_start", getWeekStartStr()).maybeSingle();
+  lastCheckin = data || false;
+}
+
+function renderScaleSelect(containerId){
+  const el = document.getElementById(containerId);
+  el.innerHTML = "";
+  el.dataset.value = "";
+  for(let i=1;i<=5;i++){
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = String(i);
+    btn.addEventListener("click", ()=>{
+      el.querySelectorAll("button").forEach(b=>b.classList.toggle("is-selected", b===btn));
+      el.dataset.value = String(i);
+    });
+    el.appendChild(btn);
+  }
+}
+
+async function openCheckinModal(){
+  await loadLastCheckin();
+  document.getElementById("checkinForm").hidden = false;
+  document.getElementById("checkinSuccess").hidden = true;
+  document.getElementById("checkinError").hidden = true;
+  renderScaleSelect("checkinEnergy");
+  renderScaleSelect("checkinNutrition");
+  renderScaleSelect("checkinSleep");
+  renderScaleSelect("checkinOverall");
+  document.querySelectorAll("#checkinDifficulty .opt-btn").forEach(b=>b.classList.remove("is-selected"));
+  document.getElementById("checkinWeight").value = profile.weight || "";
+  document.getElementById("checkinMovement").value = "";
+  document.getElementById("checkinOverlay").hidden = false;
+}
+
+function initCheckinHandlers(){
+  document.getElementById("openCheckinBtn").addEventListener("click", openCheckinModal);
+  document.getElementById("closeCheckin").addEventListener("click", ()=>{ document.getElementById("checkinOverlay").hidden = true; });
+  document.getElementById("checkinOverlay").addEventListener("click", e=>{
+    if(e.target.id === "checkinOverlay") document.getElementById("checkinOverlay").hidden = true;
+  });
+  document.getElementById("checkinDifficulty").addEventListener("click", e=>{
+    const btn = e.target.closest(".opt-btn");
+    if(!btn) return;
+    document.querySelectorAll("#checkinDifficulty .opt-btn").forEach(b=>b.classList.toggle("is-selected", b===btn));
+  });
+
+  document.getElementById("checkinForm").addEventListener("submit", async e=>{
+    e.preventDefault();
+    const errEl = document.getElementById("checkinError");
+    errEl.hidden = true;
+
+    const weight = parseFloat(document.getElementById("checkinWeight").value);
+    const energy = document.getElementById("checkinEnergy").dataset.value;
+    const nutrition = document.getElementById("checkinNutrition").dataset.value;
+    const movement = document.getElementById("checkinMovement").value;
+    const sleep = document.getElementById("checkinSleep").dataset.value;
+    const diffBtn = document.querySelector("#checkinDifficulty .opt-btn.is-selected");
+    const overall = document.getElementById("checkinOverall").dataset.value;
+
+    if(!weight || !energy || !nutrition || movement === "" || !sleep || !diffBtn || !overall){
+      errEl.textContent = t("auth.errFields");
+      errEl.hidden = false;
+      return;
+    }
+
+    const entry = {
+      user_id: currentUser.id, week_start: getWeekStartStr(), weight,
+      energy_level:Number(energy), nutrition_score:Number(nutrition), movement_days:Number(movement),
+      sleep_score:Number(sleep), main_difficulty:diffBtn.dataset.value, overall_score:Number(overall)
+    };
+
+    const btn = document.getElementById("checkinSubmitBtn");
+    btn.disabled = true;
+    const { error } = await sb.from("weekly_checkins").upsert(entry, { onConflict:"user_id,week_start" });
+    btn.disabled = false;
+    if(error){
+      errEl.textContent = t("auth.errGeneric");
+      errEl.hidden = false;
+      return;
+    }
+
+    lastCheckin = entry;
+    await sb.from("weight_logs").insert({ user_id: currentUser.id, date: todayStr(), value: weight });
+    weightsLoaded = false;
+    await awardPoints(50, "weekly_checkin");
+    await checkAchievements();
+
+    document.getElementById("checkinForm").hidden = true;
+    document.getElementById("checkinSuccess").hidden = false;
+    renderMyPlanHeader();
+    renderMyPlanThisWeek();
+  });
+}
+
+/* ---------- Plan tab — My Plan header + this week + recommended lesson ---------- */
+function computeJourneyWeek(){
+  const created = profile.createdAt ? new Date(profile.createdAt) : new Date();
+  const diffDays = Math.floor((new Date() - created) / 86400000);
+  return Math.max(1, Math.floor(diffDays/7) + 1);
+}
+
+function getRecommendedLesson(){
+  const key = (lastCheckin && DIFFICULTY_LESSON_MAP[lastCheckin.main_difficulty]) || "start-here";
+  return CONTENT[lang].lessons.find(l=>l.key===key) || CONTENT[lang].lessons[0];
+}
+
+async function renderMyPlanHeader(){
+  await loadLastCheckin();
+  const week = computeJourneyWeek();
+  document.getElementById("planWeekLabel").textContent = t("plan.weekOf").replace("{n}", week);
+  document.getElementById("planWeekBar").style.width = Math.min(100, (((week-1)%4)+1)*25) + "%";
+
+  const sub = document.getElementById("checkinCardSub");
+  const btn = document.getElementById("openCheckinBtn");
+  if(lastCheckin){
+    sub.textContent = t("plan.checkinDone");
+    btn.textContent = t("checkin.doneThisWeek");
+  }else{
+    sub.textContent = t("plan.checkinSub");
+    btn.textContent = t("plan.checkinBtn");
+  }
+}
+
+async function renderMyPlanThisWeek(){
+  await loadLastCheckin();
+  const lesson = getRecommendedLesson();
+  const list = document.getElementById("thisWeekList");
+  list.innerHTML = "";
+  const items = [
+    { icon:"🥗", label:t("today.nutritionTitle") },
+    { icon:"🏃", label:t("today.movementTitle") },
+    { icon:"💧", label:t("today.habitTitle") },
+    { icon:"📚", label:`${t("plan.recommendedLesson")}: ${lesson.title}`, isLesson:true }
+  ];
+  items.forEach(item=>{
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "this-week-item";
+    btn.innerHTML = `<span class="tw-icon">${item.icon}</span><span class="tw-label">${item.label}</span><span class="tw-check">›</span>`;
+    btn.addEventListener("click", ()=>{
+      if(item.isLesson){ switchTab("lessons"); openLesson(lesson); }
+      else{ switchTab("home"); }
+    });
+    list.appendChild(btn);
+  });
+}
+
+/* ---------- Lessons tab — Recommended for You ---------- */
+async function renderRecommendedLesson(){
+  await loadLastCheckin();
+  const lesson = getRecommendedLesson();
+  document.getElementById("recommendedLessonImg").src = lesson.cover;
+  document.getElementById("recommendedLessonImg").alt = lesson.title;
+  document.getElementById("recommendedLessonTitle").textContent = lesson.title;
+  document.getElementById("recommendedLessonBtn").onclick = ()=>openLesson(lesson);
+}
+
+/* ---------- Progress tab additions ---------- */
+async function renderProgressExtras(){
+  await loadStreak();
+  await loadPoints();
+  await loadAchievements();
+  await loadTodayTasks();
+  await loadLastCheckin();
+
+  document.getElementById("progressDayN").textContent = computeJourneyDay();
+  document.getElementById("progressCurrentStreak").textContent = streakInfo.current;
+  document.getElementById("progressLongestStreak").textContent = streakInfo.longest;
+  document.getElementById("streakNote").hidden = streakInfo.current > 0;
+
+  const doneToday = myTasks.done.size;
+  const consistencyPct = Math.round((doneToday/3)*100);
+  document.getElementById("consistencyPct").textContent = consistencyPct + "%";
+  document.getElementById("consistencyNote").textContent = consistencyPct >= 66 ? t("progress.consistencyGood") : "";
+
+  const summaryList = document.getElementById("weeklySummaryList");
+  summaryList.innerHTML = "";
+  const summaryItems = [
+    `${doneToday}/3 ${t("progress.dailyGoals")}`,
+    lastCheckin ? t("progress.checkinCompleted") : t("progress.checkinPending")
+  ];
+  summaryItems.forEach(txt=>{
+    const li = document.createElement("li");
+    li.textContent = txt;
+    summaryList.appendChild(li);
+  });
+
+  const grid = document.getElementById("achievementsGrid");
+  grid.innerHTML = "";
+  getAchievementDefs().forEach(def=>{
+    const unlocked = achievementsUnlocked.has(def.key);
+    const badge = document.createElement("div");
+    badge.className = "achievement-badge" + (unlocked ? "" : " is-locked");
+    badge.innerHTML = `<span class="ach-icon">${def.icon}</span><strong>${t(def.titleKey)}</strong><small>${t(def.reqKey)}</small>`;
+    grid.appendChild(badge);
+  });
+
+  document.getElementById("pointsTotal").textContent = pointsTotal;
+
+  await renderMonthlyChallenge();
+}
+
+function computeJourneyDay(){
+  const created = profile.createdAt ? new Date(profile.createdAt) : new Date();
+  return Math.max(1, Math.floor((new Date() - created) / 86400000) + 1);
+}
+
+async function renderMonthlyChallenge(){
+  const challenge = CONTENT[lang].monthlyChallenge;
+  const now = new Date();
+  const startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+  const endDate = new Date(now.getFullYear(), now.getMonth(), challenge.targetDays);
+  const fmt = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+
+  const { data } = await sb.from("user_daily_tasks")
+    .select("date,category")
+    .eq("user_id", currentUser.id)
+    .gte("date", fmt(startDate))
+    .lte("date", fmt(endDate));
+
+  const byDate = {};
+  (data||[]).forEach(r=>{ (byDate[r.date] = byDate[r.date] || new Set()).add(r.category); });
+  const fullyConsistentDays = Object.values(byDate).filter(s=>s.size>=3).length;
+  const pct = Math.min(100, Math.round((fullyConsistentDays/challenge.targetDays)*100));
+
+  document.getElementById("challengeBar").style.width = pct + "%";
+  document.getElementById("challengeProgressText").textContent =
+    `${fullyConsistentDays} / ${challenge.targetDays} ${t("progress.challengeDays")}`;
+
+  if(fullyConsistentDays >= challenge.targetDays){
+    const { error } = await sb.from("user_challenges")
+      .insert({ user_id: currentUser.id, challenge_key: challenge.key, completed:true, completed_at:new Date().toISOString() });
+    if(!error) await awardPoints(200, "monthly_challenge");
+  }
+}
+
+
 function initPlanHandlers(){
   document.getElementById("regeneratePlanBtn").addEventListener("click", ()=>{
     const seed = parseInt(localStorage.getItem(LS_MENU_SEED) || "0", 10);
@@ -639,7 +1053,7 @@ function reopenOnboardingForEdit(){
 /* ============================================================
    LESSONS tab
    ============================================================ */
-function renderLessons(){
+async function renderLessons(){
   const grid = document.getElementById("lessonGrid");
   grid.innerHTML = "";
   CONTENT[lang].lessons.forEach((lesson)=>{
@@ -667,6 +1081,7 @@ function renderLessons(){
     });
     grid.appendChild(card);
   });
+  await renderRecommendedLesson();
 }
 
 function openLesson(lesson){
@@ -797,7 +1212,6 @@ function initShopHandlers(){
 /* ============================================================
    PROGRESS tab
    ============================================================ */
-let weightsLoaded = false;
 
 async function loadWeights(){
   if(weightsLoaded) return; // cached — avoids a round trip on every visit to this tab
@@ -827,6 +1241,8 @@ async function renderProgress(){
 
   drawWeightChart(sorted);
   renderWeightList(sorted);
+  await checkAchievements();
+  await renderProgressExtras();
 }
 
 function drawWeightChart(sorted){
@@ -978,6 +1394,7 @@ async function boot(){
   initProgressHandlers();
   initAuthHandlers();
   initLogoutHandler();
+  initCheckinHandlers();
 
   const { data } = await sb.auth.getSession();
   if(data && data.session){
@@ -994,6 +1411,13 @@ async function boot(){
       profile = null;
       mealsData = null;
       weights = [];
+      weightsLoaded = false;
+      myMenu = null;
+      myTasks = null;
+      streakInfo = null;
+      achievementsUnlocked = null;
+      pointsTotal = null;
+      lastCheckin = null;
     }
   });
 }
