@@ -40,7 +40,7 @@ const I18N = {
     "nav.home":"Home","nav.plan":"Plan","nav.lessons":"Lessons","nav.shop":"Shop","nav.progress":"Progress",
 
     "home.today":"Today","home.tipOfDay":"Tip of the day","home.newTip":"Another tip",
-    "home.todaysPlan":"🔥 Today's Plan","home.todaysPlanSub":"Small actions for your progress today.",
+    "home.todaysPlan":"🔥 Today's Challenge","home.todaysPlanSub":"One small action for your progress today.",
     "home.taskNutrition":"Nutrition","home.taskNutritionDesc":"Follow today's nutrition recommendation",
     "home.taskMovement":"Movement","home.taskMovementDesc":"15 min of movement",
     "home.taskHabit":"Daily Habit","home.taskHabitDesc":"Complete your hydration goal",
@@ -51,10 +51,12 @@ const I18N = {
     "home.protein":"Protein","home.carbs":"Carbs","home.fat":"Fat",
     "home.proteinLeft":"Protein left","home.carbsLeft":"Carbs left","home.fatLeft":"Fat left",
     "home.mealsToday":"🍽️ Today's meals","home.clear":"Clear",
+    "home.logMeal":"Log a meal","home.mealName":"Name","home.mealKcal":"Calories (kcal)","home.addMeal":"Add",
+    "home.pointsEarned":"points!",
     "home.emptyMeals":"No meals logged yet. Tap a quick-add above.",
     "home.greetingHi":"Hi",
     "home.qaBreakfast":"🍳 Breakfast","home.qaLunch":"🥗 Lunch","home.qaSnack":"🍎 Snack","home.qaDinner":"🌙 Dinner",
-    "home.todaysPlan":"🔥 Today's Plan","home.todaysPlanSub":"Small actions for your progress today.",
+    "home.todaysPlan":"🔥 Today's Challenge","home.todaysPlanSub":"One small action for your progress today.",
 
     "plan.title":"📋 Your plan","plan.edit":"Edit data","plan.bmr":"Basal metabolic rate","plan.tdee":"Total daily expenditure",
     "plan.journeyWeek":"Week {n} of your journey","plan.mainFocus":"Main focus","plan.focusConsistency":"Consistency",
@@ -70,6 +72,8 @@ const I18N = {
     "plan.checkinCompleteTitle":"Check-in complete! 🎉","plan.checkinCompleteSub":"Your next week has been prepared.",
     "plan.yourNextWeek":"Your next week","plan.close":"Close",
     "plan.macroTargets":"Daily macro targets","plan.sampleMenu":"Sample daily menu","plan.regenerate":"🔀 Shuffle",
+    "plan.aiPlanLabel":"Meal plan","plan.aiPlanIntro":"Generate a meal plan built around your calorie and macro targets.",
+    "plan.generateBtn":"Generate my plan","plan.generating":"Generating your plan…","plan.regeneratePlan":"Generate again",
     "plan.myMenuTitle":"My own menu","plan.myMenuEdit":"Edit","plan.myMenuSub":"Write what you actually plan to eat today.",
     "plan.myMenuPh":"Type what you'll eat","plan.myMenuSave":"Save my menu",
 
@@ -98,6 +102,7 @@ const I18N = {
 
     "progress.day":"Day","progress.currentStreak":"Current streak","progress.longestStreak":"Best streak",
     "progress.points":"Your points","progress.consistency":"Your Consistency","progress.consistencyGood":"Great consistency this week.",
+    "progress.referTitle":"Refer a friend","progress.referSub":"Earn more points for every friend you invite.",
     "progress.thisWeekSummary":"This Week","progress.dailyGoals":"daily goals","progress.checkinCompleted":"Weekly check-in completed",
     "progress.achievements":"Achievements","progress.challenge":"Challenge of the Month","progress.continueChallenge":"Continue Challenge",
     "progress.challengeTitle":"21 Days of Consistency","progress.challengeComplete":"Challenge complete! 🎉",
@@ -108,6 +113,7 @@ const I18N = {
     "ach.streak30":"30 Day Journey","ach.streak30Req":"30 days in a row",
     "ach.firstCheckin":"First Check-in","ach.firstCheckinReq":"Complete your first weekly check-in",
     "ach.goalMilestone":"Goal Milestone","ach.goalMilestoneReq":"Halfway to your goal weight",
+    "ach.referral":"Refer BeSlim","ach.referralReq":"Invite a friend to join",
 
     "lessons.recommendedTitle":"Recommended for You","lessons.recommendedSub":"Based on your current plan.",
     "plan.disclaimer":"Estimate for general guidance only. Does not replace advice from a nutritionist or physician.",
@@ -133,7 +139,7 @@ const I18N = {
     "lessons.guideLabel":"Setup guide",
     "lessons.recommended":"Recommended for You","lessons.recommendedSub":"Based on your current plan.",
 
-    "shop.title":"🛍️ Shop","shop.sub":"Guides and programs to go further.","shop.buy":"Buy now",
+    "shop.title":"Next step","shop.sub":"Guides and programs to go further.","shop.buy":"Buy now",
     "shop.bestseller":"Best seller","shop.off":"50% OFF",
 
     "progress.title":"📈 Progress","progress.start":"Start","progress.current":"Current","progress.goal":"Goal",
@@ -198,7 +204,7 @@ const I18N = {
     "nav.home":"Inicio","nav.plan":"Plan","nav.lessons":"Clases","nav.shop":"Tienda","nav.progress":"Progreso",
 
     "home.today":"Hoy","home.tipOfDay":"Consejo del día","home.newTip":"Otro consejo",
-    "home.todaysPlan":"🔥 Plan de Hoy","home.todaysPlanSub":"Pequeñas acciones para tu progreso de hoy.",
+    "home.todaysPlan":"🔥 Desafío de Hoy","home.todaysPlanSub":"Una pequeña acción para tu progreso hoy.",
     "home.taskNutrition":"Nutrición","home.taskNutritionDesc":"Sigue la recomendación de nutrición de hoy",
     "home.taskMovement":"Movimiento","home.taskMovementDesc":"15 min de movimiento",
     "home.taskHabit":"Hábito Diario","home.taskHabitDesc":"Completa tu meta de hidratación",
@@ -209,10 +215,12 @@ const I18N = {
     "home.protein":"Proteína","home.carbs":"Carbohidratos","home.fat":"Grasa",
     "home.proteinLeft":"Proteína restante","home.carbsLeft":"Carbos restantes","home.fatLeft":"Grasa restante",
     "home.mealsToday":"🍽️ Comidas de hoy","home.clear":"Borrar",
+    "home.logMeal":"Registrar comida","home.mealName":"Nombre","home.mealKcal":"Calorías (kcal)","home.addMeal":"Añadir",
+    "home.pointsEarned":"¡puntos!",
     "home.emptyMeals":"Aún no hay comidas registradas. Toca un acceso rápido arriba.",
     "home.greetingHi":"Hola",
     "home.qaBreakfast":"🍳 Desayuno","home.qaLunch":"🥗 Almuerzo","home.qaSnack":"🍎 Merienda","home.qaDinner":"🌙 Cena",
-    "home.todaysPlan":"🔥 Plan de Hoy","home.todaysPlanSub":"Pequeñas acciones para tu progreso de hoy.",
+    "home.todaysPlan":"🔥 Desafío de Hoy","home.todaysPlanSub":"Una pequeña acción para tu progreso hoy.",
 
     "plan.title":"📋 Tu plan","plan.edit":"Editar datos","plan.bmr":"Tasa metabólica basal","plan.tdee":"Gasto total diario",
     "plan.journeyWeek":"Semana {n} de tu recorrido","plan.mainFocus":"Enfoque principal","plan.focusConsistency":"Consistencia",
@@ -228,6 +236,8 @@ const I18N = {
     "plan.checkinCompleteTitle":"¡Check-in completado! 🎉","plan.checkinCompleteSub":"Tu próxima semana ya está lista.",
     "plan.yourNextWeek":"Tu próxima semana","plan.close":"Cerrar",
     "plan.macroTargets":"Metas diarias de macros","plan.sampleMenu":"Menú diario de ejemplo","plan.regenerate":"🔀 Mezclar",
+    "plan.aiPlanLabel":"Plan de comidas","plan.aiPlanIntro":"Genera un plan de comidas basado en tus metas de calorías y macros.",
+    "plan.generateBtn":"Generar mi plan","plan.generating":"Generando tu plan…","plan.regeneratePlan":"Generar de nuevo",
     "plan.myMenuTitle":"Mi propio menú","plan.myMenuEdit":"Editar","plan.myMenuSub":"Escribe lo que realmente planeas comer hoy.",
     "plan.myMenuPh":"Escribe qué vas a comer","plan.myMenuSave":"Guardar mi menú",
 
@@ -256,6 +266,7 @@ const I18N = {
 
     "progress.day":"Día","progress.currentStreak":"Racha actual","progress.longestStreak":"Mejor racha",
     "progress.points":"Tus puntos","progress.consistency":"Tu Consistencia","progress.consistencyGood":"Muy buena consistencia esta semana.",
+    "progress.referTitle":"Invita a un amigo","progress.referSub":"Gana más puntos por cada amigo que invites.",
     "progress.thisWeekSummary":"Esta Semana","progress.dailyGoals":"metas diarias","progress.checkinCompleted":"Check-in semanal completado",
     "progress.achievements":"Logros","progress.challenge":"Reto del Mes","progress.continueChallenge":"Continuar Reto",
     "progress.challengeTitle":"21 Días de Consistencia","progress.challengeComplete":"¡Reto completado! 🎉",
@@ -266,6 +277,7 @@ const I18N = {
     "ach.streak30":"Recorrido de 30 Días","ach.streak30Req":"30 días seguidos",
     "ach.firstCheckin":"Primer Check-in","ach.firstCheckinReq":"Completa tu primer check-in semanal",
     "ach.goalMilestone":"Meta Intermedia","ach.goalMilestoneReq":"A mitad de camino hacia tu peso meta",
+    "ach.referral":"Recomienda BeSlim","ach.referralReq":"Invita a un amigo a unirse",
 
     "lessons.recommendedTitle":"Recomendado para ti","lessons.recommendedSub":"Según tu plan actual.",
     "plan.disclaimer":"Estimación con fines orientativos. No sustituye la asesoría de un nutricionista o médico.",
@@ -291,7 +303,7 @@ const I18N = {
     "lessons.guideLabel":"Guía de instalación",
     "lessons.recommended":"Recomendado para Ti","lessons.recommendedSub":"Basado en tu plan actual.",
 
-    "shop.title":"🛍️ Tienda","shop.sub":"Guías y programas para ir más allá.","shop.buy":"Comprar",
+    "shop.title":"Siguiente paso","shop.sub":"Guías y programas para ir más allá.","shop.buy":"Comprar",
     "shop.bestseller":"Más vendido","shop.off":"50% OFF",
 
     "progress.title":"📈 Progreso","progress.start":"Inicio","progress.current":"Actual","progress.goal":"Meta",

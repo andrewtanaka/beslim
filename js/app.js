@@ -350,18 +350,42 @@ function renderMealQuickadd(){
     const btn = document.createElement("button");
     btn.className = "qa-btn";
     btn.textContent = `+ ${t(preset.key)}`;
-    btn.addEventListener("click", async ()=>{
-      const now = new Date();
-      const time = now.toLocaleTimeString(lang==="es"?"es-ES":"en-US", { hour:"2-digit", minute:"2-digit" });
-      const { data, error } = await sb.from("meals").insert({
-        user_id: currentUser.id, date: todayStr(), name: t(preset.key), kcal: preset.kcal, time
-      }).select().single();
-      if(!error){
-        mealsData.items.push({ id:data.id, name:data.name, kcal:Number(data.kcal), time:data.time });
-        renderHome();
-      }
-    });
+    btn.addEventListener("click", ()=> openAddMealModal(t(preset.key)));
     wrap.appendChild(btn);
+  });
+}
+
+function openAddMealModal(prefillName){
+  document.getElementById("addMealName").value = prefillName || "";
+  document.getElementById("addMealKcal").value = "";
+  document.getElementById("addMealOverlay").hidden = false;
+}
+
+function initAddMealHandlers(){
+  document.getElementById("closeAddMeal").addEventListener("click", ()=>{
+    document.getElementById("addMealOverlay").hidden = true;
+  });
+  document.getElementById("addMealOverlay").addEventListener("click", e=>{
+    if(e.target.id === "addMealOverlay") document.getElementById("addMealOverlay").hidden = true;
+  });
+  document.getElementById("addMealForm").addEventListener("submit", async e=>{
+    e.preventDefault();
+    const name = document.getElementById("addMealName").value.trim();
+    const kcal = Number(document.getElementById("addMealKcal").value);
+    if(!name || !kcal) return;
+    const now = new Date();
+    const time = now.toLocaleTimeString(lang==="es"?"es-ES":"en-US", { hour:"2-digit", minute:"2-digit" });
+    const btn = document.getElementById("addMealSubmitBtn");
+    btn.disabled = true;
+    const { data, error } = await sb.from("meals").insert({
+      user_id: currentUser.id, date: todayStr(), name, kcal, time
+    }).select().single();
+    btn.disabled = false;
+    if(!error){
+      mealsData.items.push({ id:data.id, name:data.name, kcal:Number(data.kcal), time:data.time });
+      document.getElementById("addMealOverlay").hidden = true;
+      renderHome();
+    }
   });
 }
 
@@ -399,24 +423,13 @@ function renderMealList(){
 }
 
 /* ============================================================
-   Tip of the day
+   Day-of-year helper (used for task/tip rotation)
    ============================================================ */
 function dayOfYear(){
   const now = new Date();
   const start = new Date(now.getFullYear(),0,0);
   const diff = now - start;
   return Math.floor(diff / 86400000);
-}
-
-function renderTip(random){
-  const tips = t("tips");
-  let idx;
-  if(random){
-    idx = Math.floor(Math.random()*tips.length);
-  }else{
-    idx = dayOfYear() % tips.length;
-  }
-  document.getElementById("tipText").textContent = tips[idx];
 }
 
 /* ============================================================
@@ -454,8 +467,8 @@ async function renderHome(){
   renderDayStrip();
   renderMealQuickadd();
   renderMealList();
-  renderTip(false);
   await renderTodayPlan();
+  await renderHomeChallenge();
 }
 
 function setMiniRing(key, consumedVal, targetG){
@@ -504,85 +517,7 @@ async function renderPlan(){
   document.getElementById("macroProteinG").textContent = calc.proteinG + "g";
   document.getElementById("macroCarbsG").textContent = calc.carbsG + "g";
   document.getElementById("macroFatG").textContent = calc.fatG + "g";
-  renderMenu();
-  await renderMyMenu();
   await renderMyPlanHeader();
-  await renderMyPlanThisWeek();
-}
-
-function renderMenu(){
-  const foods = CONTENT[lang].foods;
-  const seed = parseInt(localStorage.getItem(LS_MENU_SEED) || "0", 10);
-  const slots = [
-    { key:"plan.breakfast", pool:foods.breakfast, share:0.25 },
-    { key:"plan.lunch", pool:foods.lunch, share:0.35 },
-    { key:"plan.snack", pool:foods.snack, share:0.10 },
-    { key:"plan.dinner", pool:foods.dinner, share:0.30 }
-  ];
-  const calc = computeCalcs(profile);
-  const menuList = document.getElementById("menuList");
-  menuList.innerHTML = "";
-  slots.forEach((slot, i)=>{
-    const food = slot.pool[(seed + i) % slot.pool.length];
-    const kcal = Math.round(calc.targetKcal * slot.share);
-    const div = document.createElement("div");
-    div.className = "menu-meal";
-    div.innerHTML = `
-      <div class="menu-meal-head"><strong>${t(slot.key)}</strong><span>${kcal} kcal</span></div>
-      <p>${food}</p>`;
-    menuList.appendChild(div);
-  });
-}
-
-/* ---------- My own menu (custom_menu table, one row per user) ---------- */
-async function loadMyMenu(){
-  if(myMenu !== null) return; // cached for the session
-  const { data } = await sb.from("custom_menu").select("*").eq("user_id", currentUser.id).maybeSingle();
-  myMenu = data ? {
-    breakfast:data.breakfast||"", lunch:data.lunch||"", snack:data.snack||"", dinner:data.dinner||"",
-    breakfastKcal:data.breakfast_kcal, lunchKcal:data.lunch_kcal, snackKcal:data.snack_kcal, dinnerKcal:data.dinner_kcal
-  } : false;
-}
-
-function hasAnyMyMenuItem(m){
-  return !!(m && (m.breakfast || m.lunch || m.snack || m.dinner));
-}
-
-async function renderMyMenu(){
-  await loadMyMenu();
-  const view = document.getElementById("myMenuView");
-  const form = document.getElementById("myMenuForm");
-  const editBtn = document.getElementById("myMenuEditBtn");
-
-  if(hasAnyMyMenuItem(myMenu)){
-    const rows = [
-      ["plan.breakfast", myMenu.breakfast, myMenu.breakfastKcal],
-      ["plan.lunch", myMenu.lunch, myMenu.lunchKcal],
-      ["plan.snack", myMenu.snack, myMenu.snackKcal],
-      ["plan.dinner", myMenu.dinner, myMenu.dinnerKcal]
-    ].filter(([,v])=>v);
-    view.innerHTML = rows.map(([key,val,kcal])=>`
-      <div class="menu-meal">
-        <div class="menu-meal-head"><strong>${t(key)}</strong>${kcal ? `<span>${Math.round(kcal)} ${t("home.kcal")}</span>` : ""}</div>
-        <p>${val}</p>
-      </div>`).join("");
-    view.hidden = false;
-    form.hidden = true;
-    editBtn.hidden = false;
-  }else{
-    view.innerHTML = "";
-    view.hidden = true;
-    form.hidden = false;
-    editBtn.hidden = true;
-    document.getElementById("myMenuBreakfast").value = (myMenu && myMenu.breakfast) || "";
-    document.getElementById("myMenuLunch").value = (myMenu && myMenu.lunch) || "";
-    document.getElementById("myMenuSnack").value = (myMenu && myMenu.snack) || "";
-    document.getElementById("myMenuDinner").value = (myMenu && myMenu.dinner) || "";
-    document.getElementById("myMenuBreakfastKcal").value = (myMenu && myMenu.breakfastKcal) || "";
-    document.getElementById("myMenuLunchKcal").value = (myMenu && myMenu.lunchKcal) || "";
-    document.getElementById("myMenuSnackKcal").value = (myMenu && myMenu.snackKcal) || "";
-    document.getElementById("myMenuDinnerKcal").value = (myMenu && myMenu.dinnerKcal) || "";
-  }
 }
 
 /* ============================================================
@@ -610,14 +545,21 @@ function getAchievementDefs(){
     { key:"streak_14", icon:"🔥", titleKey:"ach.streak14", reqKey:"ach.streak14Req", reqType:"streak", reqValue:14 },
     { key:"streak_30", icon:"🏆", titleKey:"ach.streak30", reqKey:"ach.streak30Req", reqType:"streak", reqValue:30 },
     { key:"first_checkin", icon:"📋", titleKey:"ach.firstCheckin", reqKey:"ach.firstCheckinReq", reqType:"checkin", reqValue:1 },
-    { key:"goal_milestone", icon:"🎯", titleKey:"ach.goalMilestone", reqKey:"ach.goalMilestoneReq", reqType:"goal", reqValue:0.5 }
+    { key:"goal_milestone", icon:"🎯", titleKey:"ach.goalMilestone", reqKey:"ach.goalMilestoneReq", reqType:"goal", reqValue:0.5 },
+    { key:"referral", icon:"🤝", titleKey:"ach.referral", reqKey:"ach.referralReq", reqType:"referral", reqValue:1 }
   ];
 }
 
-/* ---------- Today's Plan (Home) ---------- */
+/* ---------- Today's Challenge (Home) — one task a day ---------- */
+const TASK_CATEGORY_ORDER = ["nutrition","movement","habit"];
+
 function pickTask(category){
   const pool = CONTENT[lang].tasks[category];
   return pool[dayOfYear() % pool.length];
+}
+
+function todaysCategory(){
+  return TASK_CATEGORY_ORDER[dayOfYear() % TASK_CATEGORY_ORDER.length];
 }
 
 async function loadTodayTasks(){
@@ -630,24 +572,28 @@ async function renderTodayPlan(){
   await loadTodayTasks();
   const list = document.getElementById("taskList");
   list.innerHTML = "";
-  ["nutrition","movement","habit"].forEach(cat=>{
-    const task = pickTask(cat);
-    const isDone = myTasks.done.has(cat);
-    const row = document.createElement("div");
-    row.className = "task-item" + (isDone ? " is-done" : "");
-    row.innerHTML = `
-      <div class="task-icon">${task.emoji}</div>
-      <div class="task-body"><strong>${task.title}</strong><p>${task.desc}</p></div>
-      <button class="task-action${isDone ? " is-done" : ""}">${isDone ? "✓" : task.cta}</button>`;
-    if(!isDone){
-      row.querySelector(".task-action").addEventListener("click", ()=>completeTask(cat, task.key));
-    }
-    list.appendChild(row);
-  });
+
+  const cat = todaysCategory();
+  const task = pickTask(cat);
+  const isDone = myTasks.done.has(cat);
+
+  const row = document.createElement("div");
+  row.className = "task-item" + (isDone ? " is-done" : "");
+  row.innerHTML = `
+    <div class="task-icon">${task.emoji}</div>
+    <div class="task-body"><strong>${task.title}</strong><p>${task.desc}</p></div>
+    <button class="task-check${isDone ? " is-done" : ""}" aria-label="${t("today.done")}">
+      ${isDone ? "✓" : ""}
+    </button>`;
+  if(!isDone){
+    row.querySelector(".task-check").addEventListener("click", (e)=>completeTask(cat, task.key, e.currentTarget));
+  }
+  list.appendChild(row);
+
   await renderStreakPill();
 }
 
-async function completeTask(category, taskKey){
+async function completeTask(category, taskKey, btnEl){
   const { error } = await sb.from("user_daily_tasks").insert({
     user_id: currentUser.id, date: todayStr(), category, task_key: taskKey
   });
@@ -656,7 +602,20 @@ async function completeTask(category, taskKey){
   await awardPoints(10, "daily_task");
   await updateStreakAfterCompletion();
   await checkAchievements();
+  showPointsToast(10, btnEl);
   renderTodayPlan();
+}
+
+/* ---------- Points-earned toast animation ---------- */
+function showPointsToast(amount, anchorEl){
+  const toast = document.getElementById("pointsToast");
+  toast.textContent = `+${amount} ${t("home.pointsEarned")}`;
+  toast.hidden = false;
+  toast.classList.remove("is-animating");
+  // force reflow so the animation restarts if triggered again quickly
+  void toast.offsetWidth;
+  toast.classList.add("is-animating");
+  setTimeout(()=>{ toast.hidden = true; toast.classList.remove("is-animating"); }, 1400);
 }
 
 /* ---------- Streak ---------- */
@@ -863,47 +822,25 @@ async function renderMyPlanHeader(){
   if(lastCheckin){
     sub.textContent = t("plan.checkinDone");
     btn.textContent = t("checkin.doneThisWeek");
+    btn.classList.add("btn-small-done");
   }else{
     sub.textContent = t("plan.checkinSub");
     btn.textContent = t("plan.checkinBtn");
+    btn.classList.remove("btn-small-done");
   }
 }
 
-async function renderMyPlanThisWeek(){
-  await loadLastCheckin();
-  const lesson = getRecommendedLesson();
-  const list = document.getElementById("thisWeekList");
-  list.innerHTML = "";
-  const items = [
-    { icon:"🥗", label:t("today.nutritionTitle") },
-    { icon:"🏃", label:t("today.movementTitle") },
-    { icon:"💧", label:t("today.habitTitle") },
-    { icon:"📚", label:`${t("plan.recommendedLesson")}: ${lesson.title}`, isLesson:true }
-  ];
-  items.forEach(item=>{
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "this-week-item";
-    btn.innerHTML = `<span class="tw-icon">${item.icon}</span><span class="tw-label">${item.label}</span><span class="tw-check">›</span>`;
-    btn.addEventListener("click", ()=>{
-      if(item.isLesson){ switchTab("lessons"); openLesson(lesson); }
-      else{ switchTab("home"); }
-    });
-    list.appendChild(btn);
-  });
-}
-
-/* ---------- Lessons tab — Recommended for You ---------- */
-async function renderRecommendedLesson(){
-  await loadLastCheckin();
-  const lesson = getRecommendedLesson();
-  document.getElementById("recommendedLessonImg").src = lesson.cover;
-  document.getElementById("recommendedLessonImg").alt = lesson.title;
-  document.getElementById("recommendedLessonTitle").textContent = lesson.title;
-  document.getElementById("recommendedLessonBtn").onclick = ()=>openLesson(lesson);
-}
-
 /* ---------- Progress tab additions ---------- */
+async function computeWeeklyConsistency(){
+  const end = new Date();
+  const start = new Date(); start.setDate(end.getDate()-6);
+  const fmt = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  const { data } = await sb.from("user_daily_tasks")
+    .select("date").eq("user_id", currentUser.id).gte("date", fmt(start)).lte("date", fmt(end));
+  const activeDays = new Set((data||[]).map(r=>r.date));
+  return Math.round((activeDays.size/7)*100);
+}
+
 async function renderProgressExtras(){
   await loadStreak();
   await loadPoints();
@@ -916,22 +853,9 @@ async function renderProgressExtras(){
   document.getElementById("progressLongestStreak").textContent = streakInfo.longest;
   document.getElementById("streakNote").hidden = streakInfo.current > 0;
 
-  const doneToday = myTasks.done.size;
-  const consistencyPct = Math.round((doneToday/3)*100);
+  const consistencyPct = await computeWeeklyConsistency();
   document.getElementById("consistencyPct").textContent = consistencyPct + "%";
   document.getElementById("consistencyNote").textContent = consistencyPct >= 66 ? t("progress.consistencyGood") : "";
-
-  const summaryList = document.getElementById("weeklySummaryList");
-  summaryList.innerHTML = "";
-  const summaryItems = [
-    `${doneToday}/3 ${t("progress.dailyGoals")}`,
-    lastCheckin ? t("progress.checkinCompleted") : t("progress.checkinPending")
-  ];
-  summaryItems.forEach(txt=>{
-    const li = document.createElement("li");
-    li.textContent = txt;
-    summaryList.appendChild(li);
-  });
 
   const grid = document.getElementById("achievementsGrid");
   grid.innerHTML = "";
@@ -944,8 +868,6 @@ async function renderProgressExtras(){
   });
 
   document.getElementById("pointsTotal").textContent = pointsTotal;
-
-  await renderMonthlyChallenge();
 }
 
 function computeJourneyDay(){
@@ -953,7 +875,8 @@ function computeJourneyDay(){
   return Math.max(1, Math.floor((new Date() - created) / 86400000) + 1);
 }
 
-async function renderMonthlyChallenge(){
+/* ---------- Monthly challenge (shown on Home) ---------- */
+async function renderHomeChallenge(){
   const challenge = CONTENT[lang].monthlyChallenge;
   const now = new Date();
   const startDate = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -961,21 +884,21 @@ async function renderMonthlyChallenge(){
   const fmt = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
 
   const { data } = await sb.from("user_daily_tasks")
-    .select("date,category")
+    .select("date")
     .eq("user_id", currentUser.id)
     .gte("date", fmt(startDate))
     .lte("date", fmt(endDate));
 
-  const byDate = {};
-  (data||[]).forEach(r=>{ (byDate[r.date] = byDate[r.date] || new Set()).add(r.category); });
-  const fullyConsistentDays = Object.values(byDate).filter(s=>s.size>=3).length;
-  const pct = Math.min(100, Math.round((fullyConsistentDays/challenge.targetDays)*100));
+  // A day "counts" if the day's single challenge was completed.
+  const activeDays = new Set((data||[]).map(r=>r.date));
+  const consistentDays = activeDays.size;
+  const pct = Math.min(100, Math.round((consistentDays/challenge.targetDays)*100));
 
-  document.getElementById("challengeBar").style.width = pct + "%";
-  document.getElementById("challengeProgressText").textContent =
-    `${fullyConsistentDays} / ${challenge.targetDays} ${t("progress.challengeDays")}`;
+  document.getElementById("homeChallengeBar").style.width = pct + "%";
+  document.getElementById("homeChallengeProgressText").textContent =
+    `${consistentDays} / ${challenge.targetDays} ${t("progress.challengeDays")}`;
 
-  if(fullyConsistentDays >= challenge.targetDays){
+  if(consistentDays >= challenge.targetDays){
     const { error } = await sb.from("user_challenges")
       .insert({ user_id: currentUser.id, challenge_key: challenge.key, completed:true, completed_at:new Date().toISOString() });
     if(!error) await awardPoints(200, "monthly_challenge");
@@ -984,49 +907,45 @@ async function renderMonthlyChallenge(){
 
 
 function initPlanHandlers(){
-  document.getElementById("regeneratePlanBtn").addEventListener("click", ()=>{
-    const seed = parseInt(localStorage.getItem(LS_MENU_SEED) || "0", 10);
-    localStorage.setItem(LS_MENU_SEED, String(seed + 1));
-    renderMenu();
-  });
   document.getElementById("editProfileBtn").addEventListener("click", reopenOnboardingForEdit);
 
-  document.getElementById("myMenuEditBtn").addEventListener("click", ()=>{
-    document.getElementById("myMenuView").hidden = true;
-    document.getElementById("myMenuForm").hidden = false;
-    document.getElementById("myMenuEditBtn").hidden = true;
-  });
+  document.getElementById("generatePlanBtn").addEventListener("click", generateMealPlan);
+}
 
-  document.getElementById("myMenuForm").addEventListener("submit", async e=>{
-    e.preventDefault();
-    const kcalOrNull = id=>{
-      const v = document.getElementById(id).value;
-      return v === "" ? null : Number(v);
-    };
-    const entry = {
-      user_id: currentUser.id,
-      breakfast: document.getElementById("myMenuBreakfast").value.trim(),
-      lunch: document.getElementById("myMenuLunch").value.trim(),
-      snack: document.getElementById("myMenuSnack").value.trim(),
-      dinner: document.getElementById("myMenuDinner").value.trim(),
-      breakfast_kcal: kcalOrNull("myMenuBreakfastKcal"),
-      lunch_kcal: kcalOrNull("myMenuLunchKcal"),
-      snack_kcal: kcalOrNull("myMenuSnackKcal"),
-      dinner_kcal: kcalOrNull("myMenuDinnerKcal"),
-      updated_at: new Date().toISOString()
-    };
-    const btn = document.getElementById("myMenuSaveBtn");
-    btn.disabled = true;
-    const { error } = await sb.from("custom_menu").upsert(entry, { onConflict: "user_id" });
+function generateMealPlan(){
+  const btn = document.getElementById("generatePlanBtn");
+  const resultEl = document.getElementById("aiPlanResult");
+  const introEl = document.getElementById("aiPlanIntro");
+
+  btn.disabled = true;
+  btn.textContent = t("plan.generating");
+
+  // Brief delay purely so the action feels like it's "thinking" — the plan
+  // itself is generated instantly from the person's own targets below.
+  setTimeout(()=>{
+    const calc = computeCalcs(profile);
+    const foods = CONTENT[lang].foods;
+    const seed = Math.floor(Math.random() * 1000);
+    const slots = [
+      { key:"plan.breakfast", pool:foods.breakfast, share:0.25 },
+      { key:"plan.lunch", pool:foods.lunch, share:0.35 },
+      { key:"plan.snack", pool:foods.snack, share:0.10 },
+      { key:"plan.dinner", pool:foods.dinner, share:0.30 }
+    ];
+    resultEl.innerHTML = "";
+    slots.forEach((slot, i)=>{
+      const food = slot.pool[(seed + i) % slot.pool.length];
+      const kcal = Math.round(calc.targetKcal * slot.share);
+      const div = document.createElement("div");
+      div.className = "menu-meal";
+      div.innerHTML = `<div class="menu-meal-head"><strong>${t(slot.key)}</strong><span>${kcal} kcal</span></div><p>${food}</p>`;
+      resultEl.appendChild(div);
+    });
+    resultEl.hidden = false;
+    introEl.hidden = true;
     btn.disabled = false;
-    if(!error){
-      myMenu = {
-        breakfast:entry.breakfast, lunch:entry.lunch, snack:entry.snack, dinner:entry.dinner,
-        breakfastKcal:entry.breakfast_kcal, lunchKcal:entry.lunch_kcal, snackKcal:entry.snack_kcal, dinnerKcal:entry.dinner_kcal
-      };
-      renderMyMenu();
-    }
-  });
+    btn.textContent = t("plan.regeneratePlan");
+  }, 650);
 }
 
 function reopenOnboardingForEdit(){
@@ -1081,7 +1000,6 @@ async function renderLessons(){
     });
     grid.appendChild(card);
   });
-  await renderRecommendedLesson();
 }
 
 function openLesson(lesson){
@@ -1364,7 +1282,6 @@ function initLangHandlers(){
 }
 
 function initHomeHandlers(){
-  document.getElementById("newTipBtn").addEventListener("click", ()=>renderTip(true));
   document.getElementById("clearMealsBtn").addEventListener("click", async ()=>{
     await sb.from("meals").delete().eq("user_id", currentUser.id).eq("date", todayStr());
     mealsData.items = [];
@@ -1388,6 +1305,7 @@ async function boot(){
   initNavHandlers();
   initLangHandlers();
   initHomeHandlers();
+  initAddMealHandlers();
   initPlanHandlers();
   initLessonHandlers();
   initShopHandlers();
