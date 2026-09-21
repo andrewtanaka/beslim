@@ -51,7 +51,7 @@ const I18N = {
     "home.protein":"Protein","home.carbs":"Carbs","home.fat":"Fat",
     "home.proteinLeft":"Protein left","home.carbsLeft":"Carbs left","home.fatLeft":"Fat left",
     "home.mealsToday":"🍽️ Today's meals","home.clear":"Clear",
-    "home.logMeal":"Log a meal","home.mealName":"Name","home.mealKcal":"Calories (kcal)","home.addMeal":"Add",
+    "home.logMeal":"Log a meal","home.mealName":"Name","home.mealKcal":"Calories (kcal)","home.mealKcalShort":"kcal","home.addMeal":"Add",
     "home.pointsEarned":"points!",
     "home.emptyMeals":"No meals logged yet. Tap a quick-add above.",
     "home.greetingHi":"Hi",
@@ -103,10 +103,11 @@ const I18N = {
     "progress.day":"Day","progress.currentStreak":"Current streak","progress.longestStreak":"Best streak",
     "progress.points":"Your points","progress.consistency":"Your Consistency","progress.consistencyGood":"Great consistency this week.",
     "progress.referTitle":"Refer a friend","progress.referSub":"Earn more points for every friend you invite.",
+    "progress.referModalSub":"Share your link — you'll earn points once you copy it.","progress.copyLink":"Copy link","progress.linkCopied":"Link copied!",
     "progress.thisWeekSummary":"This Week","progress.dailyGoals":"daily goals","progress.checkinCompleted":"Weekly check-in completed",
     "progress.achievements":"Achievements","progress.challenge":"Challenge of the Month","progress.continueChallenge":"Continue Challenge",
     "progress.challengeTitle":"21 Days of Consistency","progress.challengeComplete":"Challenge complete! 🎉",
-    "progress.challengeDesc":"Complete all 3 daily actions to count a consistent day.","progress.challengeDays":"days",
+    "progress.challengeDesc":"Complete daily actions to count as a consistent day.","progress.challengeDays":"days",
 
     "ach.firstWeek":"First Week","ach.firstWeekReq":"7 day streak",
     "ach.streak14":"14 Day Streak","ach.streak14Req":"14 days in a row",
@@ -215,7 +216,7 @@ const I18N = {
     "home.protein":"Proteína","home.carbs":"Carbohidratos","home.fat":"Grasa",
     "home.proteinLeft":"Proteína restante","home.carbsLeft":"Carbos restantes","home.fatLeft":"Grasa restante",
     "home.mealsToday":"🍽️ Comidas de hoy","home.clear":"Borrar",
-    "home.logMeal":"Registrar comida","home.mealName":"Nombre","home.mealKcal":"Calorías (kcal)","home.addMeal":"Añadir",
+    "home.logMeal":"Registrar comida","home.mealName":"Nombre","home.mealKcal":"Calorías (kcal)","home.mealKcalShort":"kcal","home.addMeal":"Añadir",
     "home.pointsEarned":"¡puntos!",
     "home.emptyMeals":"Aún no hay comidas registradas. Toca un acceso rápido arriba.",
     "home.greetingHi":"Hola",
@@ -267,10 +268,11 @@ const I18N = {
     "progress.day":"Día","progress.currentStreak":"Racha actual","progress.longestStreak":"Mejor racha",
     "progress.points":"Tus puntos","progress.consistency":"Tu Consistencia","progress.consistencyGood":"Muy buena consistencia esta semana.",
     "progress.referTitle":"Invita a un amigo","progress.referSub":"Gana más puntos por cada amigo que invites.",
+    "progress.referModalSub":"Comparte tu link — ganarás puntos al copiarlo.","progress.copyLink":"Copiar link","progress.linkCopied":"¡Link copiado!",
     "progress.thisWeekSummary":"Esta Semana","progress.dailyGoals":"metas diarias","progress.checkinCompleted":"Check-in semanal completado",
     "progress.achievements":"Logros","progress.challenge":"Reto del Mes","progress.continueChallenge":"Continuar Reto",
     "progress.challengeTitle":"21 Días de Consistencia","progress.challengeComplete":"¡Reto completado! 🎉",
-    "progress.challengeDesc":"Completa las 3 acciones diarias para contar un día consistente.","progress.challengeDays":"días",
+    "progress.challengeDesc":"Completa la acción diaria para contar como un día consistente.","progress.challengeDays":"días",
 
     "ach.firstWeek":"Primera Semana","ach.firstWeekReq":"Racha de 7 días",
     "ach.streak14":"Racha de 14 Días","ach.streak14Req":"14 días seguidos",
@@ -336,6 +338,7 @@ const LANG_NAMES = { en:"EN", es:"ES" };
 const CONTENT = {
   en: {
     lessons: [
+      { title:"Community", duration:"", free:true, url:"https://t.me/+bz0kN-5aazJjMzkx", cover:"assets/lessons/community.png", desc:"Join our private community group." },
       { title:"Start here", duration:"", free:true, key:"start-here", videoFile:"assets/videos/lesson1-start-here.mp4", cover:"assets/lessons/lesson1.jpg", desc:"Begin here — the first steps to get the most out of your BeSlim journey.",
         installGuide:{
           title:"Add BeSlim to your Home Screen",
@@ -382,8 +385,7 @@ const CONTENT = {
       },
       { title:"The 5 mistakes that prevent weight loss", duration:"", free:true, key:"five-mistakes", videoFile:"assets/videos/lesson4-5-mistakes.mp4", cover:"assets/lessons/lesson4.jpg", desc:"Avoid these five common mistakes holding you back." },
       { title:"Morning ritual to activate slimming", duration:"", free:true, key:"morning-ritual", videoFile:"assets/videos/lesson5-morning-ritual.mp4", cover:"assets/lessons/lesson5.jpg", desc:"A short morning ritual to kickstart your metabolism." },
-      { title:"Real stories of women who have lost weight", duration:"", free:true, key:"real-stories", videoFile:"assets/videos/lesson6-real-stories.mp4", cover:"assets/lessons/lesson6.jpg", desc:"Real, relatable stories for extra motivation." },
-      { title:"Community", duration:"", free:true, url:"https://t.me/+bz0kN-5aazJjMzkx", cover:"assets/lessons/community.png", desc:"Join our private community group." }
+      { title:"Real stories of women who have lost weight", duration:"", free:true, key:"real-stories", videoFile:"assets/videos/lesson6-real-stories.mp4", cover:"assets/lessons/lesson6.jpg", desc:"Real, relatable stories for extra motivation." }
     ],
     products: [
       { cover:"assets/shop/banner1.jpg", name:"SUPER ACCELERATE 10X", price:"$69", desc:"Accelerate your results 10X in a practical and powerful way.", checkoutUrl:"https://checkout.kashpay.com.br/checkout/checkout-1789193073402?src=APP" },
@@ -423,6 +425,7 @@ const CONTENT = {
   },
   es: {
     lessons: [
+      { title:"Comunidad", duration:"", free:true, url:"https://t.me/+bz0kN-5aazJjMzkx", cover:"assets/lessons/community.png", desc:"Únete a nuestro grupo privado de la comunidad." },
       { title:"Empieza aquí", duration:"", free:true, key:"start-here", videoFile:"assets/videos/lesson1-start-here.mp4", cover:"assets/lessons/lesson1.jpg", desc:"Empieza por aquí — los primeros pasos en tu recorrido con BeSlim.",
         installGuide:{
           title:"Agrega BeSlim a tu pantalla de inicio",
@@ -469,8 +472,7 @@ const CONTENT = {
       },
       { title:"Los 5 errores que impiden bajar de peso", duration:"", free:true, key:"five-mistakes", videoFile:"assets/videos/lesson4-5-mistakes.mp4", cover:"assets/lessons/lesson4.jpg", desc:"Evita estos cinco errores comunes que te frenan." },
       { title:"Ritual matutino para activar tu metabolismo", duration:"", free:true, key:"morning-ritual", videoFile:"assets/videos/lesson5-morning-ritual.mp4", cover:"assets/lessons/lesson5.jpg", desc:"Un breve ritual matutino para activar tu metabolismo." },
-      { title:"Historias reales de mujeres que bajaron de peso", duration:"", free:true, key:"real-stories", videoFile:"assets/videos/lesson6-real-stories.mp4", cover:"assets/lessons/lesson6.jpg", desc:"Historias reales y cercanas para motivarte." },
-      { title:"Comunidad", duration:"", free:true, url:"https://t.me/+bz0kN-5aazJjMzkx", cover:"assets/lessons/community.png", desc:"Únete a nuestro grupo privado de la comunidad." }
+      { title:"Historias reales de mujeres que bajaron de peso", duration:"", free:true, key:"real-stories", videoFile:"assets/videos/lesson6-real-stories.mp4", cover:"assets/lessons/lesson6.jpg", desc:"Historias reales y cercanas para motivarte." }
     ],
     products: [
       { cover:"assets/shop/banner1.jpg", name:"SUPER ACCELERATE 10X", price:"$69", desc:"Acelera tus resultados 10 veces de forma práctica y poderosa.", checkoutUrl:"https://checkout.kashpay.com.br/checkout/checkout-1789193073402?src=APP" },

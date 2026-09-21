@@ -585,15 +585,15 @@ async function renderTodayPlan(){
     <button class="task-check${isDone ? " is-done" : ""}" aria-label="${t("today.done")}">
       ${isDone ? "✓" : ""}
     </button>`;
-  if(!isDone){
-    row.querySelector(".task-check").addEventListener("click", (e)=>completeTask(cat, task.key, e.currentTarget));
-  }
+  row.querySelector(".task-check").addEventListener("click", ()=>{
+    if(isDone){ uncompleteTask(cat); } else { completeTask(cat, task.key); }
+  });
   list.appendChild(row);
 
   await renderStreakPill();
 }
 
-async function completeTask(category, taskKey, btnEl){
+async function completeTask(category, taskKey){
   const { error } = await sb.from("user_daily_tasks").insert({
     user_id: currentUser.id, date: todayStr(), category, task_key: taskKey
   });
@@ -602,12 +602,21 @@ async function completeTask(category, taskKey, btnEl){
   await awardPoints(10, "daily_task");
   await updateStreakAfterCompletion();
   await checkAchievements();
-  showPointsToast(10, btnEl);
+  renderTodayPlan();
+}
+
+async function uncompleteTask(category){
+  const { error } = await sb.from("user_daily_tasks")
+    .delete()
+    .eq("user_id", currentUser.id).eq("date", todayStr()).eq("category", category);
+  if(error) return;
+  myTasks.done.delete(category);
+  await awardPoints(-10, "daily_task_undo");
   renderTodayPlan();
 }
 
 /* ---------- Points-earned toast animation ---------- */
-function showPointsToast(amount, anchorEl){
+function showPointsToast(amount){
   const toast = document.getElementById("pointsToast");
   toast.textContent = `+${amount} ${t("home.pointsEarned")}`;
   toast.hidden = false;
@@ -665,9 +674,11 @@ async function loadPoints(){
 }
 
 async function awardPoints(amount, reason){
+  await loadPoints(); // ensure the running total is loaded BEFORE we add to it, so a
+                       // fresh fetch here never double-counts the insert below
   await sb.from("points").insert({ user_id: currentUser.id, amount, reason });
-  await loadPoints();
   pointsTotal += amount;
+  if(amount > 0) showPointsToast(amount);
 }
 
 /* ---------- Achievements ---------- */
@@ -675,6 +686,51 @@ async function loadAchievements(){
   if(achievementsUnlocked) return;
   const { data } = await sb.from("user_achievements").select("achievement_key").eq("user_id", currentUser.id);
   achievementsUnlocked = new Set((data||[]).map(r=>r.achievement_key));
+}
+
+/* ---------- Refer a friend ---------- */
+const REFERRAL_LINK = "https://checkout.kashpay.com.br/checkout/checkout-1789183230168?src=INDICOU";
+
+function initReferralHandlers(){
+  document.getElementById("referFriendCard").addEventListener("click", openReferralModal);
+  document.getElementById("closeRefer").addEventListener("click", ()=>{ document.getElementById("referOverlay").hidden = true; });
+  document.getElementById("referOverlay").addEventListener("click", e=>{
+    if(e.target.id === "referOverlay") document.getElementById("referOverlay").hidden = true;
+  });
+  document.getElementById("copyReferBtn").addEventListener("click", copyReferralLink);
+}
+
+function openReferralModal(){
+  document.getElementById("referLinkText").textContent = REFERRAL_LINK;
+  document.getElementById("referCopiedNotice").hidden = true;
+  document.getElementById("referOverlay").hidden = false;
+}
+
+async function copyReferralLink(){
+  try{
+    await navigator.clipboard.writeText(REFERRAL_LINK);
+  }catch(err){
+    const ta = document.createElement("textarea");
+    ta.value = REFERRAL_LINK;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try{ document.execCommand("copy"); }catch(err2){ /* clipboard unavailable — link is still visible to copy manually */ }
+    document.body.removeChild(ta);
+  }
+  document.getElementById("referCopiedNotice").hidden = false;
+  await claimReferralPoints();
+}
+
+async function claimReferralPoints(){
+  await loadAchievements();
+  if(achievementsUnlocked.has("referral")) return;
+  const { error } = await sb.from("user_achievements").insert({ user_id: currentUser.id, achievement_key:"referral" });
+  if(!error){
+    achievementsUnlocked.add("referral");
+    await awardPoints(20, "referral_link_copied");
+  }
 }
 
 async function checkAchievements(){
@@ -691,6 +747,7 @@ async function checkAchievements(){
       const total = Math.abs(goal - start);
       qualifies = total > 0 && (Math.abs(start - currentW)/total) >= def.reqValue;
     }
+    // "referral" achievements are claimed directly via claimReferralPoints(), not checked here.
     if(qualifies){
       const { error } = await sb.from("user_achievements").insert({ user_id: currentUser.id, achievement_key: def.key });
       if(!error){
@@ -1214,7 +1271,13 @@ function renderWeightList(sorted){
     li.innerHTML = `
       <span class="weight-item-date">${dateFmt.format(new Date(entry.date))}</span>
       <span class="weight-item-val">${entry.value} kg</span>
-      ${deltaHtml}`;
+      ${deltaHtml}
+      <button class="weight-remove" aria-label="remove">×</button>`;
+    li.querySelector(".weight-remove").addEventListener("click", async ()=>{
+      await sb.from("weight_logs").delete().eq("id", entry.id);
+      weights = weights.filter(w=>w.id !== entry.id);
+      renderProgress();
+    });
     list.appendChild(li);
   });
 }
@@ -1313,6 +1376,7 @@ async function boot(){
   initAuthHandlers();
   initLogoutHandler();
   initCheckinHandlers();
+  initReferralHandlers();
 
   const { data } = await sb.auth.getSession();
   if(data && data.session){
