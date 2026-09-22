@@ -299,12 +299,17 @@
             <h3 id="addMealTitle" data-i18n="home.logMeal">Log a meal</h3>
             <button class="icon-btn" id="closeAddMeal">×</button>
           </div>
+          <p class="onb-sub" data-i18n="home.logMealSub">What did you eat, and how many calories?</p>
           <form id="addMealForm">
-            <div class="menu-field-row">
-              <input type="text" id="addMealName" data-i18n-placeholder="home.mealName" placeholder="Name" required>
-              <input type="number" id="addMealKcal" class="menu-kcal-input" min="0" step="1" data-i18n-placeholder="home.mealKcalShort" placeholder="kcal" required>
-            </div>
-            <button type="submit" class="btn-primary" id="addMealSubmitBtn" data-i18n="home.addMeal" style="margin-top:12px;">Add</button>
+            <label class="field">
+              <span data-i18n="home.mealName">Name</span>
+              <input type="text" id="addMealName" data-i18n-placeholder="home.mealNamePh" placeholder="e.g. Grilled chicken with rice" required>
+            </label>
+            <label class="field">
+              <span data-i18n="home.mealKcal">Calories (kcal)</span>
+              <input type="number" id="addMealKcal" min="0" step="1" inputmode="numeric" placeholder="0" required>
+            </label>
+            <button type="submit" class="btn-primary" id="addMealSubmitBtn" data-i18n="home.addMeal" style="margin-top:4px;">Add to today</button>
           </form>
         </div>
       </div>
@@ -450,9 +455,10 @@
         </div>
         <div class="achievements-grid" id="achievementsGrid"></div>
 
-        <div class="card">
+        <div class="card points-card-compact">
+          <span class="points-icon">⭐</span>
           <span class="muted-label" data-i18n="progress.points">Your points</span>
-          <p class="big-number" id="pointsTotal">0</p>
+          <strong id="pointsTotal">0</strong>
         </div>
 
         <button type="button" class="card referral-card" id="referFriendCard">
@@ -567,11 +573,13 @@
         <h3 data-i18n="progress.referTitle">Refer a friend</h3>
         <button class="icon-btn" id="closeRefer">×</button>
       </div>
-      <p class="onb-sub" data-i18n="progress.referModalSub">Share your link — you'll earn points once you copy it.</p>
-      <div class="refer-link-box">
-        <span id="referLinkText"></span>
+      <p class="onb-sub" data-i18n="progress.referModalSub">Share your link — you'll earn points for referring others.</p>
+      <div class="refer-link-row">
+        <span class="refer-link-text" id="referLinkText"></span>
+        <button type="button" class="refer-copy-btn" id="copyReferBtn" aria-label="Copy link">
+          <svg viewBox="0 0 24 24" width="17" height="17"><rect x="8.5" y="8.5" width="11" height="11" rx="2.2" fill="none" stroke="#fff" stroke-width="1.7"/><path d="M5 14.5V6a2 2 0 0 1 2-2h8.5" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>
+        </button>
       </div>
-      <button class="btn-primary" id="copyReferBtn" data-i18n="progress.copyLink" style="margin-top:14px;">Copy link</button>
       <p class="auth-notice" id="referCopiedNotice" hidden data-i18n="progress.linkCopied">Link copied!</p>
     </div>
   </div>

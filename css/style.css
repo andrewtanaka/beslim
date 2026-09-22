@@ -1163,6 +1163,21 @@ input{font-family:inherit;}
   margin:0;
 }
 
+.points-card-compact{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:14px 16px;
+}
+.points-icon{ font-size:19px; flex:0 0 auto; }
+.points-card-compact .muted-label{ flex:1; min-width:0; }
+.points-card-compact strong{
+  font-family:var(--font-display);
+  font-size:19px;
+  font-weight:800;
+  flex:0 0 auto;
+}
+
 .referral-card{
   display:flex;
   align-items:center;
@@ -1182,16 +1197,35 @@ input{font-family:inherit;}
 .referral-body p{ font-size:12px; color:rgba(255,255,255,.72); margin-top:3px; line-height:1.4; }
 .referral-arrow{ font-size:22px; color:var(--white); flex:0 0 auto; }
 
-.refer-link-box{
+.refer-link-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
   background:var(--gray-light);
-  border-radius:var(--radius-sm);
-  padding:13px 15px;
+  border-radius:var(--radius-pill);
+  padding:6px 6px 6px 16px;
+  margin-top:6px;
+}
+.refer-link-text{
+  flex:1;
+  min-width:0;
   font-size:12.5px;
   font-weight:600;
-  color:var(--black);
-  word-break:break-all;
-  margin-top:4px;
+  color:var(--gray-dark);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
+.refer-copy-btn{
+  flex:0 0 38px;
+  width:38px; height:38px;
+  border-radius:50%;
+  border:none;
+  background:var(--black);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+}
+.refer-copy-btn:active{ transform:scale(.92); }
 
 /* utility */
 [hidden]{ display:none !important; }
