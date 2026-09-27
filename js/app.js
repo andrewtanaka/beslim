@@ -1360,6 +1360,51 @@ function enterMainApp(){
   document.getElementById("onboarding").hidden = true;
   document.getElementById("mainApp").hidden = false;
   switchTab("home");
+  maybeShowInstallTutorial();
+}
+
+/* ---------- First-visit "Add to Home Screen" tutorial ---------- */
+const LS_SEEN_INSTALL_TUTORIAL = "beslim_seen_install_tutorial";
+
+function detectMobilePlatform(){
+  const ua = navigator.userAgent || "";
+  if(/iPhone|iPad|iPod/.test(ua)) return "ios";
+  if(/Android/.test(ua)) return "android";
+  return null;
+}
+
+function maybeShowInstallTutorial(){
+  if(localStorage.getItem(LS_SEEN_INSTALL_TUTORIAL)) return;
+  if(window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) return;
+  if(window.navigator.standalone) return; // iOS installed PWA
+  const platform = detectMobilePlatform();
+  if(!platform) return; // desktop — this tutorial isn't relevant there
+
+  const startHere = CONTENT[lang].lessons.find(l=>l.key === "start-here");
+  const guide = startHere && startHere.installGuide && startHere.installGuide[platform];
+  if(!guide) return;
+
+  const stepsEl = document.getElementById("installSteps");
+  stepsEl.innerHTML = "";
+  guide.steps.forEach((step, i)=>{
+    const div = document.createElement("div");
+    div.className = "install-step";
+    div.innerHTML = `<span class="install-step-num">${i+1}</span><p>${step}</p>`;
+    stepsEl.appendChild(div);
+  });
+
+  document.getElementById("installTutorialOverlay").hidden = false;
+}
+
+function initInstallTutorialHandlers(){
+  const dismiss = ()=>{
+    localStorage.setItem(LS_SEEN_INSTALL_TUTORIAL, "1");
+    document.getElementById("installTutorialOverlay").hidden = true;
+  };
+  document.getElementById("closeInstallTutorial").addEventListener("click", dismiss);
+  document.getElementById("installTutorialOverlay").addEventListener("click", e=>{
+    if(e.target.id === "installTutorialOverlay") dismiss();
+  });
 }
 
 async function boot(){
@@ -1377,6 +1422,7 @@ async function boot(){
   initLogoutHandler();
   initCheckinHandlers();
   initReferralHandlers();
+  initInstallTutorialHandlers();
 
   const { data } = await sb.auth.getSession();
   if(data && data.session){

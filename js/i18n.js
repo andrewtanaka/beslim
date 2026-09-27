@@ -7,6 +7,9 @@ const I18N = {
   en: {
     "onb.stepLabel":"Step", "onb.of":"of",
     "auth.emailTitle":"Sign in","auth.emailSub":"Enter the email you used at checkout.",
+    "install.title":"Add to Home Screen","install.subtitle":"Quick access to BeSlim",
+    "install.desc":"Install BeSlim on your home screen for quick access and a native app experience.",
+    "install.gotIt":"Got it",
     "auth.email":"Email",
     "auth.continueBtn":"Continue",
     "auth.logout":"Log out",
@@ -174,6 +177,9 @@ const I18N = {
   es: {
     "onb.stepLabel":"Paso", "onb.of":"de",
     "auth.emailTitle":"Iniciar sesión","auth.emailSub":"Ingresa el correo que usaste en tu compra.",
+    "install.title":"Agregar a pantalla de inicio","install.subtitle":"Acceso rápido a BeSlim",
+    "install.desc":"Instala BeSlim en tu pantalla de inicio para un acceso rápido y una experiencia de app nativa.",
+    "install.gotIt":"Entendido",
     "auth.email":"Correo electrónico",
     "auth.continueBtn":"Continuar",
     "auth.logout":"Cerrar sesión",
