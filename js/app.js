@@ -937,7 +937,7 @@ async function renderHomeChallenge(){
   const challenge = CONTENT[lang].monthlyChallenge;
   const now = new Date();
   const startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-  const endDate = new Date(now.getFullYear(), now.getMonth(), challenge.targetDays);
+  const endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0); // last day of the current month
   const fmt = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
 
   const { data } = await sb.from("user_daily_tasks")
@@ -948,7 +948,7 @@ async function renderHomeChallenge(){
 
   // A day "counts" if the day's single challenge was completed.
   const activeDays = new Set((data||[]).map(r=>r.date));
-  const consistentDays = activeDays.size;
+  const consistentDays = Math.min(activeDays.size, challenge.targetDays);
   const pct = Math.min(100, Math.round((consistentDays/challenge.targetDays)*100));
 
   document.getElementById("homeChallengeBar").style.width = pct + "%";
