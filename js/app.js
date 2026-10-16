@@ -95,7 +95,12 @@ async function handleEmailSubmit(){
   btn.disabled = true;
   try{
     const { error: fnError } = await sb.functions.invoke("passwordless-login", { body: { email } });
-    if(fnError) throw fnError;
+    if(fnError){
+      let code = "";
+      try{ code = (await fnError.context.json()).error || ""; }catch(_){}
+      if(code === "not_allowed"){ const e = new Error(t("auth.errNotAllowed")); throw e; }
+      throw fnError;
+    }
 
     const { data, error } = await sb.auth.signInWithPassword({ email, password: OPEN_ACCESS_PASSWORD });
     if(error) throw error;
@@ -103,7 +108,9 @@ async function handleEmailSubmit(){
     currentUser = data.user;
     await loadProfileAndEnter();
   }catch(err){
-    errEl.textContent = (err && err.message) ? err.message : t("auth.errGeneric");
+    const msg = (err && err.message) || "";
+    errEl.textContent = /banned/i.test(msg) ? t("auth.errNotAllowed")
+      : (err && err.message && !/edge function/i.test(msg)) ? msg : t("auth.errGeneric");
     errEl.hidden = false;
   }finally{
     btn.disabled = false;
