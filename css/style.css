@@ -398,7 +398,7 @@ input{font-family:inherit;}
   min-height:0;
   overflow-y:auto;
   -webkit-overflow-scrolling:touch;
-  padding:4px 20px 96px;
+  padding:4px 20px calc(112px + env(safe-area-inset-bottom));
   background:var(--bg-page);
 }
 
@@ -1251,7 +1251,7 @@ input{font-family:inherit;}
 [hidden]{ display:none !important; }
 
 /* Install card (Lessons) */
-.install-card{ background:var(--white); border-radius:18px; box-shadow:var(--shadow-card); overflow:hidden; }
+.install-card{ background:var(--white); border-radius:18px; box-shadow:var(--shadow-card); overflow:hidden; margin-bottom:28px; }
 .install-card-head{
   width:100%; display:flex; align-items:center; gap:14px;
   background:none; border:none; padding:12px 14px 12px 12px; cursor:pointer; text-align:left; color:var(--black);
