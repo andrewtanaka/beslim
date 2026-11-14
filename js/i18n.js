@@ -139,7 +139,7 @@ const I18N = {
     "plan.checkinSubmit":"Complete Check-in","plan.checkinSuccess":"Check-in complete! 🎉","plan.checkinSuccessSub":"Your progress has been recorded.",
     "plan.close":"Close",
 
-    "lessons.title":"🎬 Lessons",
+    "lessons.title":"🎬 Lessons","lessons.installTitle":"Add the app to your home screen.","lessons.installSub":"Open BeSlim with a single tap, like a real app.",
     "lessons.recommendedLabel":"Recommended for You","lessons.recommendedSub":"Based on your current plan.",
     "lessons.locked":"Locked","lessons.free":"Free","lessons.comingSoon":"Video coming soon — attach your lesson link here.",
     "lessons.recipeLabel":"Recipe","lessons.ingredients":"Ingredients","lessons.instructions":"Instructions",
@@ -310,7 +310,7 @@ const I18N = {
     "plan.checkinSubmit":"Completar Check-in","plan.checkinSuccess":"¡Check-in completo! 🎉","plan.checkinSuccessSub":"Tu progreso ha sido registrado.",
     "plan.close":"Cerrar",
 
-    "lessons.title":"🎬 Clases",
+    "lessons.title":"🎬 Clases","lessons.installTitle":"Agrega la app a tu pantalla de inicio.","lessons.installSub":"Abre BeSlim con un solo toque, como una app de verdad.",
     "lessons.recommendedLabel":"Recomendado para Ti","lessons.recommendedSub":"Basado en tu plan actual.",
     "lessons.locked":"Bloqueado","lessons.free":"Gratis","lessons.comingSoon":"Video próximamente — adjunta aquí tu enlace de la clase.",
     "lessons.recipeLabel":"Receta","lessons.ingredients":"Ingredientes","lessons.instructions":"Instrucciones",

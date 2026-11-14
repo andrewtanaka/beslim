@@ -1249,3 +1249,26 @@ input{font-family:inherit;}
 
 /* utility */
 [hidden]{ display:none !important; }
+
+/* Install card (Lessons) */
+.install-card{ background:var(--white); border-radius:18px; box-shadow:var(--shadow-card); overflow:hidden; }
+.install-card-head{
+  width:100%; display:flex; align-items:center; gap:14px;
+  background:none; border:none; padding:12px 14px 12px 12px; cursor:pointer; text-align:left; color:var(--black);
+}
+.install-card-thumb{ flex:0 0 56px; width:56px; height:56px; border-radius:14px; overflow:hidden; background:var(--gray-light); }
+.install-card-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.install-card-text{ flex:1; min-width:0; display:flex; flex-direction:column; gap:3px; }
+.install-card-text strong{ font-size:14px; font-weight:700; line-height:1.3; }
+.install-card-text span{ font-size:12.5px; line-height:1.4; color:var(--gray-dark); }
+.install-card-chev{ flex:0 0 20px; width:20px; height:20px; min-width:20px; display:block; color:#17a34a; transition:transform .2s ease; }
+.install-card-chev path{ stroke:#17a34a; }
+.install-card.is-open .install-card-chev{ transform:rotate(180deg); }
+.install-card-body{ padding:2px 16px 18px; border-top:1px solid var(--border); }
+.install-card-tabs{ display:flex; gap:8px; margin:14px 0 4px; }
+.install-card-tabs button{
+  flex:1; padding:9px 0; border-radius:var(--radius-pill); border:1px solid var(--border);
+  background:var(--white); color:var(--black); font-weight:700; font-size:13px; cursor:pointer;
+}
+.install-card-tabs button.is-active{ background:var(--black); color:var(--white); border-color:var(--black); }
+.install-card-body .install-steps{ padding:14px 0 0; }

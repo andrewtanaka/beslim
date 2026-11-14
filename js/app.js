@@ -1039,7 +1039,7 @@ function reopenOnboardingForEdit(){
 async function renderLessons(){
   const grid = document.getElementById("lessonGrid");
   grid.innerHTML = "";
-  CONTENT[lang].lessons.forEach((lesson)=>{
+  CONTENT[lang].lessons.forEach((lesson, idx)=>{
     const card = document.createElement("button");
     card.className = "lesson-card" + (lesson.url ? " lesson-card-link" : "");
     const metaHtml = !lesson.free
@@ -1063,7 +1063,45 @@ async function renderLessons(){
       else{ openLesson(lesson); }
     });
     grid.appendChild(card);
+    if(idx === 0) grid.appendChild(buildInstallCard());
   });
+}
+
+function buildInstallCard(){
+  const startHere = CONTENT[lang].lessons.find(l=>l.key === "start-here");
+  const guide = startHere && startHere.installGuide;
+  const wrap = document.createElement("div");
+  wrap.className = "install-card";
+  const platforms = ["ios","android"].filter(k=>guide && guide[k]);
+  let active = detectMobilePlatform() === "android" ? "android" : "ios";
+  const stepsHtml = ()=> guide[active].steps.map((st,i)=>
+    `<div class="install-step"><span class="install-step-num">${i+1}</span><p>${st}</p></div>`).join("");
+  wrap.innerHTML = `
+    <button class="install-card-head" aria-expanded="false">
+      <span class="install-card-thumb"><img src="assets/lessons/install.jpg" alt="" loading="lazy"></span>
+      <span class="install-card-text"><strong>${t("lessons.installTitle")}</strong><span>${t("lessons.installSub")}</span></span>
+      <svg class="install-card-chev" viewBox="0 0 24 24" width="20" height="20"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="install-card-body" hidden>
+      <div class="install-card-tabs">${platforms.map(k=>`<button data-p="${k}" class="${k===active?"is-active":""}">${guide[k].label}</button>`).join("")}</div>
+      <div class="install-steps">${stepsHtml()}</div>
+    </div>`;
+  const head = wrap.querySelector(".install-card-head");
+  const body = wrap.querySelector(".install-card-body");
+  head.addEventListener("click", ()=>{
+    const open = body.hidden;
+    body.hidden = !open;
+    wrap.classList.toggle("is-open", open);
+    head.setAttribute("aria-expanded", String(open));
+  });
+  wrap.querySelectorAll(".install-card-tabs button").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      active = b.dataset.p;
+      wrap.querySelectorAll(".install-card-tabs button").forEach(x=>x.classList.toggle("is-active", x===b));
+      wrap.querySelector(".install-steps").innerHTML = stepsHtml();
+    });
+  });
+  return wrap;
 }
 
 function openLesson(lesson){
