@@ -400,7 +400,7 @@ const CONTENT = {
       { title:"Real stories of women who have lost weight", duration:"", free:true, key:"real-stories", videoFile:"assets/videos/lesson6-real-stories.mp4", cover:"assets/lessons/lesson6.jpg", desc:"Real, relatable stories for extra motivation." }
     ],
     products: [
-      { cover:"assets/shop/banner1.jpg", name:"SUPER ACCELERATE 10X", price:"$69", desc:"Accelerate your results 10X in a practical and powerful way.", checkoutUrl:"https://checkout.kashpay.com.br/checkout/checkout-1789193073402?src=APP" },
+      { cover:"assets/shop/banner1.jpg", name:"SUPER ACCELERATE 10X", price:"$69", desc:"Accelerate your results 10X in a practical and powerful way + access to the doctor.", checkoutUrl:"https://checkout.kashpay.com.br/checkout/checkout-1789193073402?src=APP" },
       { cover:"assets/shop/banner2.jpg", name:"ELIMINATE SAGGINS", price:"$49", desc:"Restore your skin's firmness and achieve a more defined body after weight loss.", checkoutUrl:"https://checkout.kashpay.com/checkout/checkout-1793737765717?src=APP" },
       { cover:"assets/shop/banner3.jpg", name:"BYE! STRETCH MARKS", price:"$19", desc:"Reduce stretch marks and restore your skin's beauty.", checkoutUrl:"https://checkout.kashpay.com/checkout/checkout-1793739664082?src=APP" }
     ],
@@ -487,7 +487,7 @@ const CONTENT = {
       { title:"Historias reales de mujeres que bajaron de peso", duration:"", free:true, key:"real-stories", videoFile:"assets/videos/lesson6-real-stories.mp4", cover:"assets/lessons/lesson6.jpg", desc:"Historias reales y cercanas para motivarte." }
     ],
     products: [
-      { cover:"assets/shop/banner1.jpg", name:"SUPER ACCELERATE 10X", price:"$69", desc:"Acelera tus resultados 10 veces de forma práctica y poderosa.", checkoutUrl:"https://checkout.kashpay.com.br/checkout/checkout-1789193073402?src=APP" },
+      { cover:"assets/shop/banner1.jpg", name:"SUPER ACCELERATE 10X", price:"$69", desc:"Acelera tus resultados 10 veces de forma práctica y poderosa + acceso al médico.", checkoutUrl:"https://checkout.kashpay.com.br/checkout/checkout-1789193073402?src=APP" },
       { cover:"assets/shop/banner2.jpg", name:"ELIMINATE SAGGINS", price:"$49", desc:"Recupera la firmeza de tu piel y logra un cuerpo más definido después de bajar de peso.", checkoutUrl:"https://checkout.kashpay.com/checkout/checkout-1793737765717?src=APP" },
       { cover:"assets/shop/banner3.jpg", name:"BYE! STRETCH MARKS", price:"$19", desc:"Reduce las estrías y recupera la belleza de tu piel.", checkoutUrl:"https://checkout.kashpay.com/checkout/checkout-1793739664082?src=APP" }
     ],

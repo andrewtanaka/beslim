@@ -1063,8 +1063,8 @@ async function renderLessons(){
       else{ openLesson(lesson); }
     });
     grid.appendChild(card);
-    if(idx === 0) grid.appendChild(buildInstallCard());
   });
+  grid.appendChild(buildInstallCard());
 }
 
 function buildInstallCard(){
